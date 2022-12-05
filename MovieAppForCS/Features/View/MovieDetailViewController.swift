@@ -12,7 +12,7 @@ class MovieDetailViewController: UIViewController {
     private let service = MovieService()
     private var movieDetails: MovieDetails
 
-    // MARK: - UI Elements
+// MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .systemBackground
@@ -117,7 +117,7 @@ class MovieDetailViewController: UIViewController {
 
     private let imdbButton = CustomButton(color: .systemYellow, title: "Go to IMDb page", systemImageName: "arrow.up.right")
 
-    // MARK: - Life Cycle
+// MARK: - Life Cycle
     init(movieDetails: MovieDetails) {
         self.movieDetails = movieDetails
         super.init(nibName: nil, bundle: nil)
@@ -132,7 +132,7 @@ class MovieDetailViewController: UIViewController {
         configure()
     }
 
-    // MARK: - Functions
+// MARK: - Functions
     func configure() {
         addUIElements()
         drawDesign()
@@ -142,7 +142,6 @@ class MovieDetailViewController: UIViewController {
         makeStackView()
 
         makeDetailImageView()
-        makeDetailTagLineLabel()
         makeAllHorizontalStackView()
         makeDetailOverviewLabel()
 
@@ -179,7 +178,7 @@ extension MovieDetailViewController {
 
     func makeScrollView() {
         scrollView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview() //(view.safeAreaLayoutGuide)
+            make.top.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-100)
         }
     }
@@ -208,24 +207,16 @@ extension MovieDetailViewController {
         }
     }
 
-    func makeDetailTagLineLabel() {
-        detailTagLineLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-        }
-    }
-
     func makeAllHorizontalStackView() {
         allHorizontalStackView.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.leading.trailing.equalToSuperview().inset(50)
-//            make.top.equalTo(detailTagLineLabel.snp.bottom).offset(15)
         }
     }
 
     func makeDetailOverviewLabel() {
         detailOverviewLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(50)
-//            make.top.equalToSuperview()
             make.bottom.equalTo(scrollView.snp.bottom).offset(-15)
         }
     }
