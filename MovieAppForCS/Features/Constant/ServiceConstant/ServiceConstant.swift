@@ -6,3 +6,27 @@
 //
 
 import Foundation
+
+extension Constant {
+
+    enum ServiceEndPoints: String {
+        case BASE_URL = "https://api.themoviedb.org/3/"
+        case BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/"
+        case API_KEY = "api_key=91aababb6f421b20a53355a3944b9edb"
+        case IMDB_URL = "https://www.imdb.com/title/"
+        case RANDOM_URL = "https://picsum.photos/200/300"
+        
+        
+        static func moviesServiceEndPoint() -> String {
+            return "\(BASE_URL.rawValue)discover/movie?\(API_KEY.rawValue)"
+        }
+        
+        static func movieDetailsServiceEndPoint(movieId: Int) -> String {
+            return "\(BASE_URL.rawValue)movie/\(movieId)?\(API_KEY.rawValue)"
+        }
+    }
+
+}
+//https://www.imdb.com/title/tt6443346
+//https://api.themoviedb.org/3/discover/movies?api_key=91aababb6f421b20a53355a3944b9edb
+//https://api.themoviedb.org/3/movie/{movie_id}?api_key=cd05a7f542018a48ac0df6a5306126cf
