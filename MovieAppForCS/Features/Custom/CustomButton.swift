@@ -11,7 +11,6 @@ class CustomButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
     }
 
     required init?(coder: NSCoder) {
@@ -35,8 +34,7 @@ class CustomButton: UIButton {
                 self.configuration?.baseBackgroundColor = color
             }
         }
-//        configuration?.baseForegroundColor = .black
-//        configuration?.baseBackgroundColor = color
+
         configuration?.cornerStyle = .medium
         translatesAutoresizingMaskIntoConstraints = false
 

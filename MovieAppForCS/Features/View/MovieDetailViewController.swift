@@ -35,9 +35,8 @@ class MovieDetailViewController: UIViewController {
 
     private lazy var allHorizontalView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGray4.withAlphaComponent(0.3)
+        view.backgroundColor = .systemGray4.withAlphaComponent(0.5)
         view.layer.cornerRadius = 10
-        view.layer.borderWidth = 0.2
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -63,7 +62,7 @@ class MovieDetailViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 22)
         return label
     }()
 
@@ -116,12 +115,26 @@ class MovieDetailViewController: UIViewController {
 
     private let detailOverviewLabel: UILabel = {
         let label = UILabel()
+        label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.italicSystemFont(ofSize: 20)
         return label
     }()
 
-    private let imdbButton = CustomButton(color: .systemYellow, title: "Go to IMDb page", systemImageName: "arrow.up.right")
+    private let imdbButton = CustomButton(color: .systemYellow, title: "IMDb", systemImageName: "play.rectangle")
+
+    private let movieButton = CustomButton(color: .systemGreen, title: "Movie", systemImageName: "play.rectangle")
+
+    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart.fill")
+
+    private lazy var horizontalButtonStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [movieButton, imdbButton, favButton])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 10
+        return stackView
+    }()
 
 // MARK: - Life Cycle
     init(movieDetails: MovieDetails) {
@@ -149,12 +162,15 @@ class MovieDetailViewController: UIViewController {
 
         makeDetailImageView()
         makeDetailTagLineLabel()
-        makeAllHorizontalStackView()
         makeAllHorizontalView()
+        makeAllHorizontalStackView()
         makeDetailOverviewLabel()
 
         makeButtonView()
+        makeHorizontalButtonStackView()
+        makeMovieButton()
         makeImdbButton()
+        makeFavButton()
     }
 
     func addUIElements() {
@@ -163,7 +179,11 @@ class MovieDetailViewController: UIViewController {
         allHorizontalView.addSubview(allHorizontalStackView)
 
         view.addSubview(buttonView)
-        buttonView.addSubview(imdbButton)
+        buttonView.addSubview(horizontalButtonStackView)
+        horizontalButtonStackView.addArrangedSubview(movieButton)
+        horizontalButtonStackView.addArrangedSubview(imdbButton)
+        horizontalButtonStackView.addArrangedSubview(favButton)
+
     }
 
     func drawDesign() {
@@ -182,7 +202,7 @@ class MovieDetailViewController: UIViewController {
     }
 }
 
-// MARK: - SnapKit
+// MARK: - SnapKit - ScrolView
 extension MovieDetailViewController {
 
     func makeScrollView() {
@@ -197,14 +217,6 @@ extension MovieDetailViewController {
             make.top.equalTo(scrollView)
             make.left.right.equalTo(scrollView)
             make.width.equalTo(scrollView)
-        }
-    }
-
-    func makeButtonView() {
-        buttonView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(100)
         }
     }
 
@@ -228,34 +240,75 @@ extension MovieDetailViewController {
             make.leading.trailing.equalToSuperview().inset(15)
         }
     }
-    
+
     func makeAllHorizontalView() {
         allHorizontalView.snp.makeConstraints { make in
             make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(40)
+            make.leading.trailing.equalToSuperview().inset(30)
         }
     }
 
     func makeDetailOverviewLabel() {
         detailOverviewLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(40)
+            make.leading.trailing.equalToSuperview().inset(50)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-15)
         }
     }
+}
 
-    func makeImdbButton() {
-        imdbButton.addTarget(self, action: #selector(directToUrl), for: .touchUpInside)
+// MARK: - SnapKit - ButtonView
+extension MovieDetailViewController {
 
-        imdbButton.snp.makeConstraints { make in
-            make.width.equalTo(250)
-            make.height.equalTo(50)
-            make.centerX.equalTo(buttonView.snp.centerX)
-            make.centerY.equalTo(buttonView.snp.centerY).offset(-8)
+    func makeButtonView() {
+        buttonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(100)
         }
     }
 
-    @objc func directToUrl() {
+    func makeHorizontalButtonStackView() {
+        horizontalButtonStackView.snp.makeConstraints { make in
+            make.top.equalTo(buttonView.snp.top)
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+    }
+
+    func makeMovieButton() {
+        movieButton.addTarget(self, action: #selector(directToMovieUrl), for: .touchUpInside)
+
+        movieButton.snp.makeConstraints { make in
+            make.width.equalTo((view.frame.size.width - 40) / 3)
+            make.height.equalTo(50)
+        }
+    }
+
+    @objc func directToMovieUrl() {
+        guard let url = URL(string: movieDetails.homepage ?? "") else { return }
+        UIApplication.shared.open(url)
+    }
+
+    func makeImdbButton() {
+        imdbButton.addTarget(self, action: #selector(directToImdbUrl), for: .touchUpInside)
+
+        imdbButton.snp.makeConstraints { make in
+            make.width.equalTo(((view.frame.size.width - 40) / 3))
+            make.height.equalTo(50)
+        }
+    }
+
+    @objc func directToImdbUrl() {
         guard let url = URL(string: Constant.ServiceEndPoints.IMDB_URL.rawValue + (movieDetails.imdbID ?? "")) else { return }
         UIApplication.shared.open(url)
     }
+    
+    func makeFavButton() {
+        favButton.snp.makeConstraints { make in
+            make.width.equalTo(((view.frame.size.width - 40) / 3))
+            make.height.equalTo(50)
+        }
+    }
 }
+
+

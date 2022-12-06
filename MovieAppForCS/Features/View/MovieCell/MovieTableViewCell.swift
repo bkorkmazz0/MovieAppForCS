@@ -27,7 +27,7 @@ class MovieTableViewCell: UITableViewCell {
     private let cellTitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 25)
+        label.font = .boldSystemFont(ofSize: 24)
         return label
     }()
 

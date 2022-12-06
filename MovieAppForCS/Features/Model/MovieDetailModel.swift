@@ -11,6 +11,7 @@ import Foundation
 struct MovieDetails: Codable {
     let genres: [Genre]?
     let id: Int?
+    let homepage: String?
     let imdbID, overview: String?
     let posterPath: String?
     let releaseDate: String?
@@ -19,6 +20,7 @@ struct MovieDetails: Codable {
 
     enum CodingKeys: String, CodingKey {
         case genres, id
+        case homepage = "homepage"
         case imdbID = "imdb_id"
         case overview
         case posterPath = "poster_path"
