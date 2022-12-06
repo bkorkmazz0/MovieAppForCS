@@ -11,6 +11,7 @@ import SnapKit
 class MovieDetailViewController: UIViewController {
     private let service = MovieService()
     private var movieDetails: MovieDetails
+    private var isHeartFilled = false
 
 // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
@@ -46,7 +47,7 @@ class MovieDetailViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.layer.shadowColor = UIColor.systemGray4.cgColor
-        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOpacity = 0.4
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -121,11 +122,11 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
 
-    private let imdbButton = CustomButton(color: .systemYellow, title: "IMDb", systemImageName: "play.rectangle")
-
     private let movieButton = CustomButton(color: .systemGreen, title: "Movie", systemImageName: "play.rectangle")
 
-    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart.fill")
+    private let imdbButton = CustomButton(color: .systemYellow, title: "IMDb", systemImageName: "play.rectangle")
+
+    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart")
 
     private lazy var horizontalButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [movieButton, imdbButton, favButton])
@@ -199,6 +200,10 @@ class MovieDetailViewController: UIViewController {
         detailGenresLabel.text = movieDetails.genres?.first?.name
         detailOverviewLabel.text = movieDetails.overview?.trimmingCharacters(in: .whitespaces)
         detailTagLineLabel.text = movieDetails.tagline?.trimmingCharacters(in: .whitespaces)
+    }
+
+    func toastMessage() {
+
     }
 }
 
@@ -302,11 +307,34 @@ extension MovieDetailViewController {
         guard let url = URL(string: Constant.ServiceEndPoints.IMDB_URL.rawValue + (movieDetails.imdbID ?? "")) else { return }
         UIApplication.shared.open(url)
     }
-    
+
     func makeFavButton() {
+        favButton.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
+
         favButton.snp.makeConstraints { make in
             make.width.equalTo(((view.frame.size.width - 40) / 3))
             make.height.equalTo(50)
+        }
+    }
+
+    @objc func favButtonTapped() {
+        isHeartFilled.toggle()
+        if isHeartFilled {
+            let toast = UIAlertController(title: "You're gooood :)", message: "Added to favorites", preferredStyle: .actionSheet)
+            present(toast, animated: true, completion: nil)
+            favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                toast.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            let toast = UIAlertController(title: "You're baaaad :(", message: "Removed from favorites", preferredStyle: .actionSheet)
+            present(toast, animated: true, completion: nil)
+            favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                toast.dismiss(animated: true, completion: nil)
+            }
         }
     }
 }

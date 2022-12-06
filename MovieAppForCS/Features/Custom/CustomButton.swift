@@ -19,21 +19,12 @@ class CustomButton: UIButton {
 
     init(color: UIColor, title: String, systemImageName: String) {
         super.init(frame: .zero)
-
+        
         configuration = .tinted()
         configuration?.title = title
 
-        if UITraitCollection.current.userInterfaceStyle == .dark {
-            DispatchQueue.main.async {
-                self.configuration?.baseForegroundColor = color
-                self.configuration?.baseBackgroundColor = color
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.configuration?.baseForegroundColor = .black
-                self.configuration?.baseBackgroundColor = color
-            }
-        }
+        configuration?.baseForegroundColor = color
+        configuration?.baseBackgroundColor = color
 
         configuration?.cornerStyle = .medium
         translatesAutoresizingMaskIntoConstraints = false

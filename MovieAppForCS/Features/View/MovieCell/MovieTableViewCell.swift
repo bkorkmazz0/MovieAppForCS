@@ -85,8 +85,8 @@ class MovieTableViewCell: UITableViewCell {
     
     func drawDesign() {
         contentView.layer.cornerRadius = 20
-        contentView.backgroundColor = .lightGray.withAlphaComponent(0.15)
-        contentView.layer.borderWidth = 3
+        contentView.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        contentView.layer.borderWidth = 2
         contentView.layer.borderColor = UIColor.white.cgColor
     }
 
