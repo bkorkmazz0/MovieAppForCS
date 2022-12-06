@@ -24,13 +24,23 @@ class MovieDetailViewController: UIViewController {
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [detailImageView, detailTagLineLabel, allHorizontalStackView, detailOverviewLabel])
+        let stackView = UIStackView(arrangedSubviews: [detailImageView, detailTagLineLabel, allHorizontalView, detailOverviewLabel])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 15
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+
+    private lazy var allHorizontalView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray4.withAlphaComponent(0.3)
+        view.layer.cornerRadius = 10
+        view.layer.borderWidth = 0.2
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private lazy var buttonView: UIView = {
@@ -74,9 +84,9 @@ class MovieDetailViewController: UIViewController {
     private lazy var horizontalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [detailStarImageView, detailAverageVoteLabel])
         stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 1
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 2
         return stackView
     }()
 
@@ -100,11 +110,7 @@ class MovieDetailViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        stackView.backgroundColor = .systemGray4.withAlphaComponent(0.3)
-        stackView.layer.cornerRadius = 10
-        stackView.layer.borderWidth = 0.2
-        stackView.clipsToBounds = true
+        stackView.spacing = 30
         return stackView
     }()
 
@@ -142,7 +148,9 @@ class MovieDetailViewController: UIViewController {
         makeStackView()
 
         makeDetailImageView()
+        makeDetailTagLineLabel()
         makeAllHorizontalStackView()
+        makeAllHorizontalView()
         makeDetailOverviewLabel()
 
         makeButtonView()
@@ -152,6 +160,7 @@ class MovieDetailViewController: UIViewController {
     func addUIElements() {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
+        allHorizontalView.addSubview(allHorizontalStackView)
 
         view.addSubview(buttonView)
         buttonView.addSubview(imdbButton)
@@ -165,7 +174,7 @@ class MovieDetailViewController: UIViewController {
 
     func setUpDatas() {
         detailImageView.kf.setImage(with: URL(string: Constant.ServiceEndPoints.BASE_IMAGE_URL.rawValue + (movieDetails.posterPath ?? "")))
-        detailAverageVoteLabel.text = String(format: "%.1f", movieDetails.voteAverage ?? 00)
+        detailAverageVoteLabel.text = String(format: "%.1f", movieDetails.voteAverage ?? 0.0)
         detailReleaseDateLabel.text = String((movieDetails.releaseDate?.split(separator: "-").first) ?? "")
         detailGenresLabel.text = movieDetails.genres?.first?.name
         detailOverviewLabel.text = movieDetails.overview?.trimmingCharacters(in: .whitespaces)
@@ -207,16 +216,29 @@ extension MovieDetailViewController {
         }
     }
 
+    func makeDetailTagLineLabel() {
+        detailTagLineLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+    }
+
     func makeAllHorizontalStackView() {
         allHorizontalStackView.snp.makeConstraints { make in
-            make.height.equalTo(60)
-            make.leading.trailing.equalToSuperview().inset(50)
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(15)
+        }
+    }
+    
+    func makeAllHorizontalView() {
+        allHorizontalView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(40)
         }
     }
 
     func makeDetailOverviewLabel() {
         detailOverviewLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(50)
+            make.leading.trailing.equalToSuperview().inset(40)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-15)
         }
     }
