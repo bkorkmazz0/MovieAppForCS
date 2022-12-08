@@ -122,9 +122,9 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
 
-    private let movieButton = CustomButton(color: .systemGreen, title: "Movie", systemImageName: "play.rectangle")
+    private let movieButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle")
 
-    private let imdbButton = CustomButton(color: .systemYellow, title: "IMDb", systemImageName: "play.rectangle")
+    private let imdbButton = CustomButton(color: .systemBlue, title: "IMDb", systemImageName: "play.rectangle")
 
     private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart")
 
@@ -136,6 +136,10 @@ class MovieDetailViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
+    
+    private let commentButton = CustomButton(color: .blue, title: "", systemImageName: "heart") // popup
+    
+    private let detailPopup = PopupWindowViewController(title: "Ürünü Değerlendir", buttonText: "Yorum Yap")
 
 // MARK: - Life Cycle
     init(movieDetails: MovieDetails) {
@@ -162,6 +166,7 @@ class MovieDetailViewController: UIViewController {
         makeStackView()
 
         makeDetailImageView()
+        makeCommentButton() //  popup
         makeDetailTagLineLabel()
         makeAllHorizontalView()
         makeAllHorizontalStackView()
@@ -178,6 +183,7 @@ class MovieDetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         allHorizontalView.addSubview(allHorizontalStackView)
+        view.addSubview(commentButton) // popup
 
         view.addSubview(buttonView)
         buttonView.addSubview(horizontalButtonStackView)
@@ -202,9 +208,6 @@ class MovieDetailViewController: UIViewController {
         detailTagLineLabel.text = movieDetails.tagline?.trimmingCharacters(in: .whitespaces)
     }
 
-    func toastMessage() {
-
-    }
 }
 
 // MARK: - SnapKit - ScrolView
@@ -233,6 +236,20 @@ extension MovieDetailViewController {
         }
     }
 
+    func makeCommentButton() {
+        commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
+
+        commentButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(100)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(5)
+            make.width.height.equalTo(20)
+        }
+    }
+
+    @objc func commentButtonClicked() {
+        self.present(detailPopup, animated: true, completion: nil)
+    }
+    
     func makeDetailTagLineLabel() {
         detailTagLineLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(40)
@@ -327,6 +344,7 @@ extension MovieDetailViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 toast.dismiss(animated: true, completion: nil)
             }
+            
         } else {
             let toast = UIAlertController(title: "You're baaaad :(", message: "Removed from favorites", preferredStyle: .actionSheet)
             present(toast, animated: true, completion: nil)

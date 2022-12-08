@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D3478982940610900C37006 /* PopupWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3478972940610900C37006 /* PopupWindowViewController.swift */; };
 		7D7A2A5A29354AF900360F1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A2A5929354AF900360F1D /* AppDelegate.swift */; };
 		7D7A2A5C29354AF900360F1D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A2A5B29354AF900360F1D /* SceneDelegate.swift */; };
 		7D7A2A6329354AFA00360F1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D7A2A6229354AFA00360F1D /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7D3478972940610900C37006 /* PopupWindowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupWindowViewController.swift; sourceTree = "<group>"; };
 		7D7A2A5629354AF900360F1D /* MovieAppForCS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieAppForCS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D7A2A5929354AF900360F1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7D7A2A5B29354AF900360F1D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			children = (
 				7D7A2AAC2935525400360F1D /* MovieViewController.swift */,
 				7D7A2AAE2935526D00360F1D /* MovieDetailViewController.swift */,
+				7D3478972940610900C37006 /* PopupWindowViewController.swift */,
 				7D7A2AA9293551DB00360F1D /* MovieCell */,
 			);
 			path = View;
@@ -384,6 +387,7 @@
 				7D7A2AA82935513D00360F1D /* MovieViewModel.swift in Sources */,
 				7D7A2AA2293550D100360F1D /* MovieService.swift in Sources */,
 				7D7A2A9D29354EB900360F1D /* Constant.swift in Sources */,
+				7D3478982940610900C37006 /* PopupWindowViewController.swift in Sources */,
 				7D7A2AA02935507600360F1D /* ServiceConstant.swift in Sources */,
 				7DD3550C293949C600294D6B /* CustomButton.swift in Sources */,
 				7D7A2AAF2935526D00360F1D /* MovieDetailViewController.swift in Sources */,
