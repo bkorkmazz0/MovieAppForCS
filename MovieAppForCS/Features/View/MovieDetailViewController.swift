@@ -10,14 +10,15 @@ import SnapKit
 
 class MovieDetailViewController: UIViewController {
     private let service = MovieService()
-    private var movieDetails: MovieDetails
+    private let movieDetails: MovieDetails
     private var isHeartFilled = false
+    private var isWatchFilled = false
 
 // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .systemBackground
-        scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
         scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 3)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
@@ -32,15 +33,6 @@ class MovieDetailViewController: UIViewController {
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
-    }()
-
-    private lazy var allHorizontalView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray4.withAlphaComponent(0.5)
-        view.layer.cornerRadius = 10
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
 
     private lazy var buttonView: UIView = {
@@ -114,6 +106,15 @@ class MovieDetailViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var allHorizontalView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray4.withAlphaComponent(0.5)
+        view.layer.cornerRadius = 10
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let detailOverviewLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -136,10 +137,12 @@ class MovieDetailViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
-    
-    private let commentButton = CustomButton(color: .blue, title: "", systemImageName: "heart") // popup
-    
-    private let detailPopup = PopupWindowViewController(title: "Ürünü Değerlendir", buttonText: "Yorum Yap")
+
+    private let addToWatchListButton = CustomButton(color: .orange, title: "", systemImageName: "plus.app")
+
+    private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil")
+
+    private let detailPopup = PopupWindowViewController(title: "Rate The Product", buttonText: "Make Comment")
 
 // MARK: - Life Cycle
     init(movieDetails: MovieDetails) {
@@ -166,7 +169,8 @@ class MovieDetailViewController: UIViewController {
         makeStackView()
 
         makeDetailImageView()
-        makeCommentButton() //  popup
+        makeAddToWatchListButton()
+        makeCommentButton()
         makeDetailTagLineLabel()
         makeAllHorizontalView()
         makeAllHorizontalStackView()
@@ -182,20 +186,19 @@ class MovieDetailViewController: UIViewController {
     func addUIElements() {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
+        scrollView.addSubview(addToWatchListButton)
+        scrollView.addSubview(commentButton)
         allHorizontalView.addSubview(allHorizontalStackView)
-        view.addSubview(commentButton) // popup
 
         view.addSubview(buttonView)
         buttonView.addSubview(horizontalButtonStackView)
         horizontalButtonStackView.addArrangedSubview(movieButton)
         horizontalButtonStackView.addArrangedSubview(imdbButton)
         horizontalButtonStackView.addArrangedSubview(favButton)
-
     }
 
     func drawDesign() {
         view.backgroundColor = .systemBackground
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "black")
         navigationItem.title = movieDetails.title
     }
 
@@ -236,20 +239,60 @@ extension MovieDetailViewController {
         }
     }
 
+    func makeAddToWatchListButton() {
+        addToWatchListButton.addTarget(self, action: #selector(addToWatchListButtonClicked), for: .touchUpInside)
+
+        addToWatchListButton.snp.makeConstraints { make in
+            make.top.equalTo(detailImageView.snp.top)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(15)
+            make.width.height.equalTo(50)
+        }
+    }
+
+    @objc func addToWatchListButtonClicked() {
+        isWatchFilled.toggle()
+
+        if isWatchFilled {
+            let toast = UIAlertController(title: "-----------", message: "Added to watchlist", preferredStyle: .alert)
+            present(toast, animated: true, completion: nil)
+            addToWatchListButton.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                toast.dismiss(animated: true, completion: nil)
+            }
+
+        } else {
+            let toast = UIAlertController(title: "-----------", message: "Removed from watchlist", preferredStyle: .alert)
+            present(toast, animated: true, completion: nil)
+            addToWatchListButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                toast.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+
     func makeCommentButton() {
         commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
 
         commentButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(100)
-            make.leading.equalTo(detailImageView.snp.trailing).offset(5)
-            make.width.height.equalTo(20)
+            make.top.equalTo(addToWatchListButton.snp.bottom).offset(15)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(15)
+            make.width.height.equalTo(50)
         }
     }
 
     @objc func commentButtonClicked() {
-        self.present(detailPopup, animated: true, completion: nil)
+        self.present(detailPopup, animated: true, completion: { [self] in
+            detailPopup.view.superview?.isUserInteractionEnabled = true
+            detailPopup.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+        })
     }
-    
+
+    @objc func dismissOnTapOutside(){
+       self.dismiss(animated: true, completion: nil)
+    }
+
     func makeDetailTagLineLabel() {
         detailTagLineLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(40)
@@ -273,7 +316,7 @@ extension MovieDetailViewController {
     func makeDetailOverviewLabel() {
         detailOverviewLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(50)
-            make.bottom.equalTo(scrollView.snp.bottom).offset(-15)
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
         }
     }
 }
@@ -337,16 +380,16 @@ extension MovieDetailViewController {
     @objc func favButtonTapped() {
         isHeartFilled.toggle()
         if isHeartFilled {
-            let toast = UIAlertController(title: "You're gooood :)", message: "Added to favorites", preferredStyle: .actionSheet)
+            let toast = UIAlertController(title: "-----------", message: "Added to favorites", preferredStyle: .actionSheet)
             present(toast, animated: true, completion: nil)
             favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 toast.dismiss(animated: true, completion: nil)
             }
-            
+
         } else {
-            let toast = UIAlertController(title: "You're baaaad :(", message: "Removed from favorites", preferredStyle: .actionSheet)
+            let toast = UIAlertController(title: "-----------", message: "Removed from favorites", preferredStyle: .actionSheet)
             present(toast, animated: true, completion: nil)
             favButton.setImage(UIImage(systemName: "heart"), for: .normal)
 

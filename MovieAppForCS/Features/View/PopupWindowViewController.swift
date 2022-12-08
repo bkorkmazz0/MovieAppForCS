@@ -14,12 +14,10 @@ private class PopupWindowView: UIView {
     let popupLabel: UILabel = UILabel(frame: .zero)
     let popupTextView: UITextView = UITextView(frame: .zero)
     let popupButton = UIButton(frame: CGRect.zero)
-
     let borderWidth: CGFloat = 2.0
 
     init() {
         super.init(frame: .zero)
-        // Semi-transparent background
         backgroundColor = .black.withAlphaComponent(0.5)
 
         popupView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,9 +42,12 @@ private class PopupWindowView: UIView {
         popupTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
 
         popupButton.translatesAutoresizingMaskIntoConstraints = false
-        popupButton.setTitleColor(.white, for: .normal)
         popupButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        popupButton.setTitleColor(.white, for: .normal)
         popupButton.backgroundColor = .systemGreen
+//        popupButton.configuration = .tinted()
+//        popupButton.configuration?.baseForegroundColor = .systemGreen
+//        popupButton.configuration?.baseBackgroundColor = .systemGreen
 
         popupView.addSubview(popupLabel)
         popupView.addSubview(popupTextView)
@@ -92,7 +93,7 @@ class PopupWindowViewController: UIViewController {
     init(title: String, buttonText: String) {
         super.init(nibName: nil, bundle: nil)
 
-        modalTransitionStyle = .crossDissolve
+        modalTransitionStyle = .coverVertical
         modalPresentationStyle = .overFullScreen
 
         popupView.popupLabel.text = title
@@ -102,19 +103,22 @@ class PopupWindowViewController: UIViewController {
         view = popupView
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     @objc func dismissView() {
         self.dismiss(animated: true, completion: nil)
-        let toast = UIAlertController(title: "You're gooood :)", message: "make comment", preferredStyle: .alert)
+        popupView.popupTextView.text = ""
+        makeToast()
+    }
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            self.present(toast, animated: true, completion: nil)
+    func makeToast() {
+        let toast = UIAlertController(title: "-----------", message: "Thank you for rating the product.", preferredStyle: .alert)
+        self.present(toast, animated: true, completion: nil)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            toast.dismiss(animated: true, completion: nil)
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            toast.dismiss(animated: true, completion: nil)        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
