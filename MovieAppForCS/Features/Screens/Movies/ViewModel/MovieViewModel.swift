@@ -45,4 +45,4 @@ extension MovieViewModel {
             response(data)
         }
     }
-    }
+}

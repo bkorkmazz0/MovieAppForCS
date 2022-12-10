@@ -9,11 +9,9 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class MovieTableViewCell: UITableViewCell {
+final class MovieTableViewCell: UITableViewCell {
 
-    // MARK: - UI Elements
-    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right")
-
+// MARK: - UI Elements
     private let cellImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 3
@@ -55,23 +53,24 @@ class MovieTableViewCell: UITableViewCell {
         return label
     }()
 
-    // MARK: - Enums
+    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right")
+
+// MARK: - Enums
     enum Identifier: String {
         case movieTableViewCell = "tableViewCellIdentifier"
     }
 
-    // MARK: - Life Cycle
+// MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
-
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Functions
+// MARK: - Functions
     func configure() {
         addUIElements()
         drawDesign()
@@ -82,7 +81,7 @@ class MovieTableViewCell: UITableViewCell {
         makeAverageVoteLabel()
         makeReleaseDateLabel()
     }
-    
+
     func drawDesign() {
         contentView.layer.cornerRadius = 20
         contentView.backgroundColor = .lightGray.withAlphaComponent(0.2)

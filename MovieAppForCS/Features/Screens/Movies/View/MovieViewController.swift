@@ -15,8 +15,12 @@ protocol MovieOutput {
 
 final class MovieViewController: UIViewController {
 
-// MARK: - UI Elements
+// MARK: - Properties
+    private lazy var results: [Result] = []
+    private let service = MovieService()
+    lazy var viewModel: MovieProtocol = MovieViewModel()
 
+// MARK: - UI Elements
     private lazy var tableView: UITableView = {
         let tableView: UITableView = UITableView()
         tableView.delegate = self
@@ -27,22 +31,15 @@ final class MovieViewController: UIViewController {
         return tableView
     }()
 
-    private var results: [Result] = []
-    private let service = MovieService()
-    lazy var viewModel: MovieProtocol = MovieViewModel()
-
 // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         viewModel.setDelegate(output: self)
         viewModel.fetchDatas()
-
     }
 
 // MARK: - Functions
-
     private func configure() {
         addSubviews()
         drawDesign()
@@ -50,7 +47,6 @@ final class MovieViewController: UIViewController {
     }
 
     private func drawDesign() {
-//        view.overrideUserInterfaceStyle = .dark
         view.backgroundColor = .systemBackground
         title = "Movies"
         navigationItem.backButtonTitle = ""
@@ -63,7 +59,6 @@ final class MovieViewController: UIViewController {
 }
 
 // MARK: - Tableview Extension
-
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
@@ -83,7 +78,6 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - SnapKit Extension
-
 extension MovieViewController {
     private func makeTableView() {
         tableView.snp.makeConstraints { make in

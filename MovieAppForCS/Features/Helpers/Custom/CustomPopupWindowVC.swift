@@ -8,17 +8,17 @@
 import UIKit
 import SnapKit
 
-private class PopupWindowView: UIView {
+private class CustomPopupWindowView: UIView {
 
-    let popupView: UIView = UIView(frame: .zero)
-    let popupLabel: UILabel = UILabel(frame: .zero)
-    let popupTextView: UITextView = UITextView(frame: .zero)
-    let popupButton = UIButton(frame: CGRect.zero)
+    let popupView = UIView()
+    let popupLabel = UILabel()
+    let popupTextView = UITextView()
+    let popupButton = UIButton()
     let borderWidth: CGFloat = 2.0
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = .black.withAlphaComponent(0.5)
+        backgroundColor = .black.withAlphaComponent(0.4)
 
         popupView.translatesAutoresizingMaskIntoConstraints = false
         popupView.backgroundColor = .systemGray5
@@ -45,14 +45,10 @@ private class PopupWindowView: UIView {
         popupButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         popupButton.setTitleColor(.white, for: .normal)
         popupButton.backgroundColor = .systemGreen
-//        popupButton.configuration = .tinted()
-//        popupButton.configuration?.baseForegroundColor = .systemGreen
-//        popupButton.configuration?.baseBackgroundColor = .systemGreen
 
         popupView.addSubview(popupLabel)
         popupView.addSubview(popupTextView)
         popupView.addSubview(popupButton)
-
         addSubview(popupView)
 
         popupView.snp.makeConstraints { make in
@@ -86,9 +82,14 @@ private class PopupWindowView: UIView {
     }
 }
 
+protocol PopupWindowDelegate {
+    func didTapPopupButton()
+}
+
 class PopupWindowViewController: UIViewController {
 
-    private let popupView = PopupWindowView()
+    private let popupView = CustomPopupWindowView()
+    var delegate: PopupWindowDelegate?
 
     init(title: String, buttonText: String) {
         super.init(nibName: nil, bundle: nil)
@@ -106,16 +107,7 @@ class PopupWindowViewController: UIViewController {
     @objc func dismissView() {
         self.dismiss(animated: true, completion: nil)
         popupView.popupTextView.text = ""
-        makeToast()
-    }
-
-    func makeToast() {
-        let toast = UIAlertController(title: "-----------", message: "Thank you for rating the product.", preferredStyle: .alert)
-        self.present(toast, animated: true, completion: nil)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            toast.dismiss(animated: true, completion: nil)
-        }
+        delegate?.didTapPopupButton()
     }
 
     required init?(coder: NSCoder) {

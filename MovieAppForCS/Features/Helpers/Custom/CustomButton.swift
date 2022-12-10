@@ -13,13 +13,9 @@ class CustomButton: UIButton {
         super.init(frame: frame)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     init(color: UIColor, title: String, systemImageName: String) {
         super.init(frame: .zero)
-        
+
         configuration = .tinted()
         configuration?.title = title
 
@@ -32,5 +28,9 @@ class CustomButton: UIButton {
         configuration?.image = UIImage(systemName: systemImageName)
         configuration?.imagePadding = 10
         configuration?.imagePlacement = .trailing
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

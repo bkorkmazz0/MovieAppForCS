@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 
-class MovieDetailViewController: UIViewController {
+final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
+
+// MARK: - Properties
     private let service = MovieService()
-    private let movieDetails: MovieDetails
+    private var movieDetails: MovieDetails
     private var isHeartFilled = false
     private var isWatchFilled = false
 
@@ -138,7 +140,7 @@ class MovieDetailViewController: UIViewController {
         return stackView
     }()
 
-    private let addToWatchListButton = CustomButton(color: .orange, title: "", systemImageName: "plus.app")
+    private let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app")
 
     private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil")
 
@@ -161,6 +163,8 @@ class MovieDetailViewController: UIViewController {
 
 // MARK: - Functions
     func configure() {
+        detailPopup.delegate = self
+
         addUIElements()
         drawDesign()
         setUpDatas()
@@ -169,11 +173,9 @@ class MovieDetailViewController: UIViewController {
         makeStackView()
 
         makeDetailImageView()
-        makeAddToWatchListButton()
-        makeCommentButton()
         makeDetailTagLineLabel()
-        makeAllHorizontalView()
         makeAllHorizontalStackView()
+        makeAllHorizontalView()
         makeDetailOverviewLabel()
 
         makeButtonView()
@@ -181,6 +183,9 @@ class MovieDetailViewController: UIViewController {
         makeMovieButton()
         makeImdbButton()
         makeFavButton()
+
+        makeAddToWatchListButton()
+        makeCommentButton()
     }
 
     func addUIElements() {
@@ -211,6 +216,9 @@ class MovieDetailViewController: UIViewController {
         detailTagLineLabel.text = movieDetails.tagline?.trimmingCharacters(in: .whitespaces)
     }
 
+    func didTapPopupButton() {
+        showToast(message: "Thanks for your comment.", seconds: 1.5, color: .systemGreen, style: .alert)
+    }
 }
 
 // MARK: - SnapKit - ScrolView
@@ -253,22 +261,11 @@ extension MovieDetailViewController {
         isWatchFilled.toggle()
 
         if isWatchFilled {
-            let toast = UIAlertController(title: "-----------", message: "Added to watchlist", preferredStyle: .alert)
-            present(toast, animated: true, completion: nil)
+            showToast(message: "Added to watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
             addToWatchListButton.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                toast.dismiss(animated: true, completion: nil)
-            }
-
         } else {
-            let toast = UIAlertController(title: "-----------", message: "Removed from watchlist", preferredStyle: .alert)
-            present(toast, animated: true, completion: nil)
+            showToast(message: "Removed from watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
             addToWatchListButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                toast.dismiss(animated: true, completion: nil)
-            }
         }
     }
 
@@ -289,8 +286,8 @@ extension MovieDetailViewController {
         })
     }
 
-    @objc func dismissOnTapOutside(){
-       self.dismiss(animated: true, completion: nil)
+    @objc func dismissOnTapOutside() {
+        self.dismiss(animated: true, completion: nil)
     }
 
     func makeDetailTagLineLabel() {
@@ -380,24 +377,12 @@ extension MovieDetailViewController {
     @objc func favButtonTapped() {
         isHeartFilled.toggle()
         if isHeartFilled {
-            let toast = UIAlertController(title: "-----------", message: "Added to favorites", preferredStyle: .actionSheet)
-            present(toast, animated: true, completion: nil)
+            showToast(message: "Added to favorites", seconds: 1.5, color: .systemRed, style: .alert)
             favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                toast.dismiss(animated: true, completion: nil)
-            }
-
         } else {
-            let toast = UIAlertController(title: "-----------", message: "Removed from favorites", preferredStyle: .actionSheet)
-            present(toast, animated: true, completion: nil)
+            showToast(message: "Removed from favorites", seconds: 1.5, color: .systemRed, style: .alert)
             favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                toast.dismiss(animated: true, completion: nil)
-            }
         }
     }
 }
-
-
