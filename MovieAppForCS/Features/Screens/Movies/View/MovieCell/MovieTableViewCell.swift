@@ -19,6 +19,7 @@ final class MovieTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
+        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellImageView
         return imageView
     }()
 
@@ -26,6 +27,7 @@ final class MovieTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 24)
+        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellTitleLabel
         return label
     }()
 
@@ -33,12 +35,14 @@ final class MovieTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
+        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellStarImageView
         return imageView
     }()
 
     private let cellAverageVoteLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
+        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellAverageVoteLabel
         return label
     }()
 
@@ -50,10 +54,11 @@ final class MovieTableViewCell: UITableViewCell {
         label.layer.borderWidth = 0.2
         label.textAlignment = .center
         label.clipsToBounds = true
+        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellReleaseDateLabel
         return label
     }()
 
-    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right")
+    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right", identifier: Constant.UITestIdentifier.MovieTableViewCell.movieCellDirectButton)
 
 // MARK: - Enums
     enum Identifier: String {
@@ -69,7 +74,7 @@ final class MovieTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 // MARK: - Functions
     func configure() {
         addUIElements()
@@ -86,7 +91,7 @@ final class MovieTableViewCell: UITableViewCell {
         contentView.layer.cornerRadius = 20
         contentView.backgroundColor = .lightGray.withAlphaComponent(0.2)
         contentView.layer.borderWidth = 2
-        contentView.layer.borderColor = UIColor.white.cgColor
+        contentView.layer.borderColor = UIColor.systemBackground.cgColor
     }
 
     func addUIElements() {

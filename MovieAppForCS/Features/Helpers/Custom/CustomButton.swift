@@ -13,7 +13,7 @@ class CustomButton: UIButton {
         super.init(frame: frame)
     }
 
-    init(color: UIColor, title: String, systemImageName: String) {
+    init(color: UIColor, title: String, systemImageName: String, identifier: String) {
         super.init(frame: .zero)
 
         configuration = .tinted()
@@ -28,6 +28,8 @@ class CustomButton: UIButton {
         configuration?.image = UIImage(systemName: systemImageName)
         configuration?.imagePadding = 10
         configuration?.imagePlacement = .trailing
+        
+        accessibilityIdentifier = identifier
     }
 
     required init?(coder: NSCoder) {

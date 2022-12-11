@@ -26,6 +26,7 @@ private class CustomPopupWindowView: UIView {
         popupView.layer.borderColor = UIColor.white.cgColor
         popupView.layer.cornerRadius = 15
         popupView.layer.masksToBounds = true
+        popupView.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupView
 
         popupLabel.translatesAutoresizingMaskIntoConstraints = false
         popupLabel.textColor = .black
@@ -35,17 +36,20 @@ private class CustomPopupWindowView: UIView {
         popupLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         popupLabel.numberOfLines = 1
         popupLabel.textAlignment = .center
-
+        popupLabel.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupLabel
+        
         popupTextView.translatesAutoresizingMaskIntoConstraints = false
         popupTextView.textAlignment = .left
         popupTextView.textColor = .black
         popupTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-
+        popupTextView.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupTextView
+        
         popupButton.translatesAutoresizingMaskIntoConstraints = false
         popupButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         popupButton.setTitleColor(.white, for: .normal)
         popupButton.backgroundColor = .systemGreen
-
+        popupButton.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupButton
+        
         popupView.addSubview(popupLabel)
         popupView.addSubview(popupTextView)
         popupView.addSubview(popupButton)

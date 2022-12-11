@@ -27,6 +27,3 @@ extension Constant {
     }
 
 }
-//https://www.imdb.com/title/tt6443346
-//https://api.themoviedb.org/3/discover/movies?api_key=91aababb6f421b20a53355a3944b9edb
-//https://api.themoviedb.org/3/movie/436270?api_key=91aababb6f421b20a53355a3944b9edb

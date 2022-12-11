@@ -28,6 +28,7 @@ final class MovieViewController: UIViewController {
         tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.Identifier.movieTableViewCell.rawValue)
         tableView.rowHeight = 180
         tableView.separatorStyle = .none
+        tableView.accessibilityIdentifier = Constant.UITestIdentifier.MovieViewController.moviesTableView
         return tableView
     }()
 
@@ -49,8 +50,6 @@ final class MovieViewController: UIViewController {
     private func drawDesign() {
         view.backgroundColor = .systemBackground
         title = "Movies"
-        navigationItem.backButtonTitle = ""
-        navigationController?.navigationBar.tintColor = .black
     }
 
     private func addSubviews() {
