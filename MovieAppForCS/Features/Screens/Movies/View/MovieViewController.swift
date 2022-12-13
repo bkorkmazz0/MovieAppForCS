@@ -9,15 +9,14 @@ import UIKit
 import SnapKit
 
 protocol MovieOutput {
-    func selectedMovie(movieId: Int)
     func saveAllDatas(values: [Result])
+    func selectedMovie(movieId: Int)
 }
 
 final class MovieViewController: UIViewController {
 
 // MARK: - Properties
     private lazy var results: [Result] = []
-    private let service = MovieService()
     lazy var viewModel: MovieProtocol = MovieViewModel()
 
 // MARK: - UI Elements
@@ -71,7 +70,7 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        //tableView.deselectRow(at: indexPath, animated: true)
         viewModel.movieOutput?.selectedMovie(movieId: results[indexPath.row].id ?? 0)
     }
 }
@@ -88,7 +87,6 @@ extension MovieViewController {
 }
 
 extension MovieViewController: MovieOutput {
-
     func saveAllDatas(values: [Result]) {
         results = values
         tableView.reloadData()

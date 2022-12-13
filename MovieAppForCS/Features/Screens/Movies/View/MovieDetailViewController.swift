@@ -11,7 +11,6 @@ import SnapKit
 final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
 
 // MARK: - Properties
-    private let service = MovieService()
     private var movieDetails: MovieDetails
     private var isHeartFilled = false
     private var isWatchFilled = false

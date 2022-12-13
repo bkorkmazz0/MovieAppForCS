@@ -9,23 +9,23 @@ import Foundation
 
 protocol MovieProtocol {
     func fetchDatas()
-    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> Void)
-    func setDelegate(output: MovieOutput)
-    var movieOutput: MovieOutput? { get set }
+    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> ())
     var movieService: MovieServiceProtocol { get }
-    var movieResults: [Result] { get set }
+    var movieResults: [Result] { get }
+    var movieOutput: MovieOutput? { get set }
+    func setDelegate(output: MovieOutput)
 }
 
 final class MovieViewModel: MovieProtocol {
+    let movieService: MovieServiceProtocol = MovieService()
+//    init() {
+//        movieService
+//    }
+    var movieResults: [Result] = []
+    var movieOutput: MovieOutput?
     func setDelegate(output: MovieOutput) {
         movieOutput = output
     }
-    var movieOutput: MovieOutput?
-    let movieService: MovieServiceProtocol
-    init() {
-        movieService = MovieService()
-    }
-    var movieResults: [Result] = []
 }
 
 extension MovieViewModel {
@@ -36,7 +36,7 @@ extension MovieViewModel {
         }
     }
 
-    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> Void) {
+    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> ()) {
         movieService.fetchAllDetails(movieId: movieId) { data in
             guard let data = data else {
                 response(nil)

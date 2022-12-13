@@ -14,7 +14,6 @@ private class CustomPopupWindowView: UIView {
     let popupLabel = UILabel()
     let popupTextView = UITextView()
     let popupButton = UIButton()
-    let borderWidth: CGFloat = 2.0
 
     init() {
         super.init(frame: .zero)
@@ -22,7 +21,7 @@ private class CustomPopupWindowView: UIView {
 
         popupView.translatesAutoresizingMaskIntoConstraints = false
         popupView.backgroundColor = .systemGray5
-        popupView.layer.borderWidth = borderWidth
+        popupView.layer.borderWidth = 2
         popupView.layer.borderColor = UIColor.white.cgColor
         popupView.layer.cornerRadius = 15
         popupView.layer.masksToBounds = true
@@ -37,19 +36,20 @@ private class CustomPopupWindowView: UIView {
         popupLabel.numberOfLines = 1
         popupLabel.textAlignment = .center
         popupLabel.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupLabel
-        
+
         popupTextView.translatesAutoresizingMaskIntoConstraints = false
+        popupTextView.backgroundColor = .white
         popupTextView.textAlignment = .left
         popupTextView.textColor = .black
         popupTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         popupTextView.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupTextView
-        
+
         popupButton.translatesAutoresizingMaskIntoConstraints = false
         popupButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         popupButton.setTitleColor(.white, for: .normal)
         popupButton.backgroundColor = .systemGreen
         popupButton.accessibilityIdentifier = Constant.UITestIdentifier.CustomPopupWindow.popupWindowPopupButton
-        
+
         popupView.addSubview(popupLabel)
         popupView.addSubview(popupTextView)
         popupView.addSubview(popupButton)
@@ -109,9 +109,16 @@ class PopupWindowViewController: UIViewController {
     }
 
     @objc func dismissView() {
-        self.dismiss(animated: true, completion: nil)
-        popupView.popupTextView.text = ""
-        delegate?.didTapPopupButton()
+        // TODO: - Check with delegate
+        if popupView.popupTextView.text == "" {
+            popupView.popupTextView.layer.borderColor = UIColor.red.cgColor
+            popupView.popupTextView.layer.borderWidth = 2
+        } else {
+            self.dismiss(animated: true, completion: nil)
+            popupView.popupTextView.layer.borderWidth = 0
+            popupView.popupTextView.text = ""
+            delegate?.didTapPopupButton()
+        }
     }
 
     required init?(coder: NSCoder) {
