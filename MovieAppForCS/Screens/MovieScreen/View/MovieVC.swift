@@ -13,7 +13,7 @@ protocol MovieOutput {
     func selectedMovie(movieId: Int)
 }
 
-final class MovieViewController: UIViewController {
+final class MovieVC: UIViewController {
 
 // MARK: - Properties
     private lazy var results: [Result] = []
@@ -24,10 +24,10 @@ final class MovieViewController: UIViewController {
         let tableView: UITableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.Identifier.movieTableViewCell.rawValue)
-        tableView.rowHeight = 180
+        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.Identifier.movieTableViewCell.rawValue)
+        tableView.rowHeight = 230
         tableView.separatorStyle = .none
-        tableView.accessibilityIdentifier = Constant.UITestIdentifier.MovieViewController.moviesTableView
+        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
         return tableView
     }()
 
@@ -48,7 +48,7 @@ final class MovieViewController: UIViewController {
 
     private func drawDesign() {
         view.backgroundColor = .systemBackground
-        title = "Movies"
+        title = "Popular Movies 🔥"
     }
 
     private func addSubviews() {
@@ -57,13 +57,13 @@ final class MovieViewController: UIViewController {
 }
 
 // MARK: - Tableview Extension
-extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
+extension MovieVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell: MovieTableViewCell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.Identifier.movieTableViewCell.rawValue) as? MovieTableViewCell else { return UITableViewCell() }
+        guard let cell: MovieCell = tableView.dequeueReusableCell(withIdentifier: MovieCell.Identifier.movieTableViewCell.rawValue) as? MovieCell else { return UITableViewCell() }
         cell.selectionStyle = .none
         cell.saveModel(model: results[indexPath.row])
         return cell
@@ -76,7 +76,7 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - SnapKit Extension
-extension MovieViewController {
+extension MovieVC {
     private func makeTableView() {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -86,7 +86,7 @@ extension MovieViewController {
     }
 }
 
-extension MovieViewController: MovieOutput {
+extension MovieVC: MovieOutput {
     func saveAllDatas(values: [Result]) {
         results = values
         tableView.reloadData()
@@ -95,7 +95,7 @@ extension MovieViewController: MovieOutput {
     func selectedMovie(movieId: Int) {
         viewModel.fetchDetails(movieId: movieId) { data in
             guard let data = data else { return }
-            self.navigationController?.pushViewController(MovieDetailViewController(movieDetails: data), animated: true)
+            self.navigationController?.pushViewController(MovieDetailVC(movieDetails: data), animated: true)
         }
     }
 }

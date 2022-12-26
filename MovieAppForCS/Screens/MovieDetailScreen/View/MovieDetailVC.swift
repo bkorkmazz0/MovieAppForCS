@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
+final class MovieDetailVC: UIViewController, PopupWindowDelegate {
 
 // MARK: - Properties
     private var movieDetails: MovieDetails
@@ -49,7 +49,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
-        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailImageView
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailImageView
         return imageView
     }()
 
@@ -58,7 +58,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailTagLineLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailTagLineLabel
         return label
     }()
 
@@ -66,7 +66,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
-        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailStarImageLabel
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailStarImageLabel
         return imageView
     }()
 
@@ -74,7 +74,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 20)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailAverageVoteLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailAverageVoteLabel
         return label
     }()
 
@@ -92,7 +92,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailGenresLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailGenresLabel
         return label
     }()
 
@@ -100,7 +100,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 20)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailReleaseDateLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailReleaseDateLabel
         return label
     }()
 
@@ -127,15 +127,15 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.italicSystemFont(ofSize: 20)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieDetailViewController.movieDetailOverviewLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailOverviewLabel
         return label
     }()
 
-    private let officialButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle", identifier: Constant.UITestIdentifier.MovieDetailViewController.movieDetailOfficialButton)
+    private let officialButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailOfficialButton)
 
-    private let imdbButton = CustomButton(color: .systemBlue, title: "IMDb", systemImageName: "play.rectangle", identifier: Constant.UITestIdentifier.MovieDetailViewController.movieDetailImdbButton)
+    private let imdbButton = CustomButton(color: .systemBlue, title: "IMDb", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailImdbButton)
 
-    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart", identifier: Constant.UITestIdentifier.MovieDetailViewController.movieDetailFavButton)
+    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailFavButton)
 
     private lazy var horizontalButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [officialButton, imdbButton, favButton])
@@ -146,11 +146,11 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
         return stackView
     }()
 
-    private let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app", identifier: Constant.UITestIdentifier.MovieDetailViewController.movieDetailAddToWatchButton)
+    private let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailAddToWatchButton)
 
-    private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil", identifier: Constant.UITestIdentifier.MovieDetailViewController.movieDetailMakeCommentButton)
+    private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailMakeCommentButton)
 
-    private let detailPopup = PopupWindowViewController(title: "Rate The Product", buttonText: "Make Comment")
+    private let detailPopup = CustomPopupVC(title: "Rate The Product", buttonText: "Make Comment")
 
 // MARK: - Life Cycle
     init(movieDetails: MovieDetails) {
@@ -214,7 +214,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
     }
 
     func setUpDatas() {
-        detailImageView.kf.setImage(with: URL(string: Constant.ServiceEndPoints.BASE_IMAGE_URL.rawValue + (movieDetails.posterPath ?? "")))
+        detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.BASE_IMAGE_URL.rawValue + (movieDetails.posterPath ?? "")))
         detailAverageVoteLabel.text = String(format: "%.1f", movieDetails.voteAverage ?? 0.0)
         detailReleaseDateLabel.text = String((movieDetails.releaseDate?.split(separator: "-").first) ?? "")
         detailGenresLabel.text = movieDetails.genres?.first?.name
@@ -228,7 +228,7 @@ final class MovieDetailViewController: UIViewController, PopupWindowDelegate {
 }
 
 // MARK: - SnapKit - ScrolView
-extension MovieDetailViewController {
+extension MovieDetailVC {
 
     func makeScrollView() {
         scrollView.snp.makeConstraints { make in
@@ -325,7 +325,7 @@ extension MovieDetailViewController {
 }
 
 // MARK: - SnapKit - ButtonView
-extension MovieDetailViewController {
+extension MovieDetailVC {
 
     func makeButtonView() {
         buttonView.snp.makeConstraints { make in
@@ -367,7 +367,7 @@ extension MovieDetailViewController {
     }
 
     @objc func directToImdbUrl() {
-        guard let url = URL(string: Constant.ServiceEndPoints.IMDB_URL.rawValue + (movieDetails.imdbID ?? "")) else { return }
+        guard let url = URL(string: ServiceEndpoints.IMDB_URL.rawValue + (movieDetails.imdbID ?? "")) else { return }
         UIApplication.shared.open(url)
     }
 

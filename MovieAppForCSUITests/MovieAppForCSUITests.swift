@@ -9,33 +9,65 @@ import XCTest
 
 final class MovieAppForCSUITests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    let app = XCUIApplication()
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+    override func setUp() {
+        super.setUp()
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    override func tearDown() {
+        super.tearDown()
     }
+
+//    func testScrollingTableView() throws {
+//
+//        let tableView = app.tables[UITestConstants.MovieViewController.moviesTableView].cells
+//        let numberOfRows = tableView.count
+//
+//        // Scroll to the last row
+//        let lastIndexPath = IndexPath(row: numberOfRows - 1, section: 0)
+//        tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
+//
+//        // Verify that the last cell is visible
+//        let lastCell = tableView.cellForRow(at: lastIndexPath)
+//        XCTAssertNotNil(lastCell)
+//
+//        // Scroll to the first row
+//        let firstIndexPath = IndexPath(row: 0, section: 0)
+//        tableView.scrollToRow(at: firstIndexPath, at: .top, animated: false)
+//
+//        // Verify that the first cell is visible
+//        let firstCell = tableView.cellForRow(at: firstIndexPath)
+//        XCTAssertNotNil(firstCell)
+//    }
+
+
+
+//    // Scroll down
+//    tableView.swipeUp()
+//
+//    // Verify that the last cell is visible
+//    let lastCell = tableView.cells.element(boundBy: tableView.cells.count - 1)
+//    XCTAssertTrue(lastCell.isHittable)
+//
+//    // Scroll up
+//    tableView.swipeDown()
+//
+//    // Verify that the first cell is visible
+//    let firstCell = tableView.cells.element(boundBy: 0)
+//    XCTAssertTrue(firstCell.isHittable)
+
+//            // Scroll down
+//        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
+//        let lastRowIndexPath = IndexPath(row: lastRowIndex, section: 0)
+//        let lastCell = tableView.cellForRow(at: lastRowIndexPath)
+//        XCTAssert(lastCell.isVisible, "Last cell is not visible")
+//
+//        // Scroll up
+//        let firstRowIndexPath = IndexPath(row: 0, section: 0)
+//        let firstCell = tableView.cellForRow(at: firstRowIndexPath)
+//        XCTAssert(firstCell.isVisible, "First cell is not visible")
+
 }

@@ -15,7 +15,7 @@ protocol MovieServiceProtocol {
 
 struct MovieService: MovieServiceProtocol {
     func fetchAllDatas(response: @escaping ([Result]?) -> ()) {
-        AF.request(Constant.ServiceEndPoints.moviesServiceEndPoint(), method: .get).responseDecodable(of: Movies.self) { (model) in
+        AF.request(ServiceEndpoints.moviesServiceEndPoint(), method: .get).responseDecodable(of: Movies.self) { (model) in
             guard let data = model.value else {
                 response(nil)
                 return
@@ -25,7 +25,7 @@ struct MovieService: MovieServiceProtocol {
     }
 
     func fetchAllDetails(movieId: Int, response: @escaping (MovieDetails?) -> ()) {
-        AF.request(Constant.ServiceEndPoints.movieDetailsServiceEndPoint(movieId: movieId), method: .get)
+        AF.request(ServiceEndpoints.movieDetailsServiceEndPoint(movieId: movieId), method: .get)
             .responseDecodable(of: MovieDetails.self) { (model) in
             guard let data = model.value else {
                 response(nil)

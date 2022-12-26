@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class MovieTableViewCell: UITableViewCell {
+final class MovieCell: UITableViewCell {
 
 // MARK: - UI Elements
     private let cellImageView: UIImageView = {
@@ -19,7 +19,7 @@ final class MovieTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
-        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellImageView
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellImageView
         return imageView
     }()
 
@@ -27,7 +27,7 @@ final class MovieTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 24)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellTitleLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellTitleLabel
         return label
     }()
 
@@ -35,14 +35,14 @@ final class MovieTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
-        imageView.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellStarImageView
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellStarImageView
         return imageView
     }()
 
     private let cellAverageVoteLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellAverageVoteLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellAverageVoteLabel
         return label
     }()
 
@@ -54,11 +54,11 @@ final class MovieTableViewCell: UITableViewCell {
         label.layer.borderWidth = 0.2
         label.textAlignment = .center
         label.clipsToBounds = true
-        label.accessibilityIdentifier = Constant.UITestIdentifier.MovieTableViewCell.movieCellReleaseDateLabel
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellReleaseDateLabel
         return label
     }()
 
-    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right", identifier: Constant.UITestIdentifier.MovieTableViewCell.movieCellDirectButton)
+    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right", identifier: UIAccessibleIdentifiers.MovieCell.movieCellDirectButton)
 
 // MARK: - Enums
     enum Identifier: String {
@@ -104,7 +104,7 @@ final class MovieTableViewCell: UITableViewCell {
     }
 
     func saveModel(model: Result) {
-        cellImageView.kf.setImage(with: URL(string: Constant.ServiceEndPoints.BASE_IMAGE_URL.rawValue + (model.posterPath ?? "")))
+        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.BASE_IMAGE_URL.rawValue + (model.posterPath ?? "")))
         cellTitleLabel.text = model.title
         cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model.releaseDate?.split(separator: "-").first) ?? "")
@@ -112,12 +112,11 @@ final class MovieTableViewCell: UITableViewCell {
 }
 
 // MARK: - SnapKit
-extension MovieTableViewCell {
+extension MovieCell {
 
     func makeImageView() {
         cellImageView.snp.makeConstraints { make in
-            make.height.equalTo(150)
-            make.width.equalTo(110)
+            make.width.equalTo(140)
             make.top.leading.bottom.equalTo(contentView).inset(15)
         }
     }
@@ -125,8 +124,8 @@ extension MovieTableViewCell {
     func makeTitleLabel() {
         cellTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(cellImageView.snp.trailing).offset(15)
-            make.top.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
         }
     }
 
@@ -159,7 +158,7 @@ extension MovieTableViewCell {
         cellToDetailButton.snp.makeConstraints { make in
             make.height.width.equalTo(40)
             make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalTo(contentView.snp.centerY)
+            make.centerY.equalTo(contentView.snp.centerY).offset(8)
         }
     }
 }

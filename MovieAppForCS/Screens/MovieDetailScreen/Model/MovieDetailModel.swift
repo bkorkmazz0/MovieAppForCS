@@ -10,22 +10,21 @@ import Foundation
 // MARK: - Movie Details
 struct MovieDetails: Codable {
     let genres: [Genre]?
-    let id: Int?
     let homepage: String?
     let imdbID, overview: String?
     let posterPath: String?
     let releaseDate: String?
-    let status, tagline, title: String?
+    let tagline, title: String?
     let voteAverage: Double?
 
     enum CodingKeys: String, CodingKey {
-        case genres, id
+        case genres
         case homepage = "homepage"
         case imdbID = "imdb_id"
         case overview
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-        case status, tagline, title
+        case tagline, title
         case voteAverage = "vote_average"
     }
 }
