@@ -109,7 +109,6 @@ class CustomPopupVC: UIViewController {
     }
 
     @objc func dismissView() {
-        #warning("TODO: - Check with delegate")
         if popupView.popupTextView.text.isEmpty {
             showToast(message: "TextView cannot be left blank!", seconds: 1.5, color: .red, style: .alert)
         } else {

@@ -9,10 +9,12 @@ import Foundation
 
 struct UIAccessibleIdentifiers {
 
+    // MARK: - MovieVC
     struct MovieVC {
         static let moviesTableView = "movies-table-view"
     }
 
+    // MARK: - MovieCell
     struct MovieCell {
         static let movieCellImageView = "movie-cell-image-view"
         static let movieCellTitleLabel = "movie-cell-title-label"
@@ -22,6 +24,7 @@ struct UIAccessibleIdentifiers {
         static let movieCellDirectButton = "movie-cell-direct-button"
     }
 
+    // MARK: - MovieDetailVC
     struct MovieDetailVC {
         static let movieDetailImageView = "movie-detail-image-view"
         static let movieDetailTagLineLabel = "movie-detail-tag-line-label"
@@ -37,6 +40,7 @@ struct UIAccessibleIdentifiers {
         static let movieDetailFavButton = "movie-detail-fav-button"
     }
 
+    // MARK: - CustomPopupVC
     struct CustomPopupVC {
         static let popupWindowPopupView = "popup-window-popup-view"
         static let popupWindowPopupLabel = "popup-window-popup-label"
@@ -44,6 +48,7 @@ struct UIAccessibleIdentifiers {
         static let popupWindowPopupButton = "popup-window-popup-button"
     }
 
+    // MARK: - CustomToastMessage
     struct CustomToastMessage {
 //            static let productCellCurrentPriceFirstPartLabel = "product-cell-current-price-first-part-label"
 //            static let productCellCurrentOldFirstPartLabel = "product-cell-current-old-first-part-label"

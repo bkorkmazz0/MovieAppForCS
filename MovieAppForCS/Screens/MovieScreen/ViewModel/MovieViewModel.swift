@@ -7,42 +7,45 @@
 
 import Foundation
 
-protocol MovieProtocol {
-    func fetchDatas()
-    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> ())
-    var movieService: MovieServiceProtocol { get }
-    var movieResults: [Result] { get }
-    var movieOutput: MovieOutput? { get set }
-    func setDelegate(output: MovieOutput)
+protocol MovieViewModelProtocol {
+    var view: MovieVCProtocol? { get set }
+
+    func viewDidLoad()
+    func getMovies()
+    func getDetail(movieId: Int)
 }
 
-final class MovieViewModel: MovieProtocol {
-    let movieService: MovieServiceProtocol = MovieService()
-//    init() {
-//        movieService
-//    }
-    var movieResults: [Result] = []
-    var movieOutput: MovieOutput?
-    func setDelegate(output: MovieOutput) {
-        movieOutput = output
+final class MovieViewModel {
+    weak var view: MovieVCProtocol?
+    private let service = MovieService()
+    var movies: [Result] = []
+    private var page: Int = 1
+}
+
+extension MovieViewModel: MovieViewModelProtocol {
+    func viewDidLoad() {
+        view?.configureDesign()
+        view?.configureTableView()
+        getMovies()
     }
-}
 
-extension MovieViewModel {
-    func fetchDatas() {
-        movieService.fetchAllDatas() { [weak self] (model) in
-            self?.movieResults = model ?? []
-            self?.movieOutput?.saveAllDatas(values: self?.movieResults ?? [])
+    func getMovies() {
+        service.fetchAllMovies(page: page) { [weak self] returnedMovies in
+            guard let self = self else { return }
+            guard let returnedMovies = returnedMovies else { return }
+
+            self.movies.append(contentsOf: returnedMovies)
+            self.page += 1
+            self.view?.reloadTableView()
         }
     }
 
-    func fetchDetails(movieId: Int, response: @escaping (MovieDetails?) -> ()) {
-        movieService.fetchAllDetails(movieId: movieId) { data in
-            guard let data = data else {
-                response(nil)
-                return
-            }
-            response(data)
+    func getDetail(movieId: Int) {
+        service.fetchAllMovieDetails(movieId: movieId) { [weak self] returnedDetail in
+            guard let self = self else { return }
+            guard let returnedDetail = returnedDetail else { return }
+            
+            self.view?.navigateToDetailScreen(movie: returnedDetail)
         }
     }
 }

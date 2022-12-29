@@ -7,46 +7,57 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
-final class MovieDetailVC: UIViewController, PopupWindowDelegate {
+protocol MovieDetailVCProtocol: AnyObject {
+    func configureDesign()
+    func configureAddSubViews()
+    func configureSetupUIs()
+    func configureSetupDatas()
+}
 
-// MARK: - Properties
-    private var movieDetails: MovieDetails
+final class MovieDetailVC: UIViewController {
+
+    // MARK: - Properties
+    private let movie: MovieDetails
+    private let viewModel = MovieDetailViewModel()
     private var isHeartFilled = false
     private var isWatchFilled = false
+    private let padding: CGFloat = 15
 
-// MARK: - UI Elements
+    // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.backgroundColor = .systemBackground
-        scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 3)
+        let scrollView = UIScrollView(frame: .zero)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .systemBackground
+        scrollView.frame = CGRect(x: 0, y: 0, width: CGFloat.deviceWidth, height: CGFloat.deviceHeight)
+        scrollView.contentSize = CGSize(width: CGFloat.deviceWidth, height: CGFloat.deviceHeight * 3)
         scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [detailImageView, detailTagLineLabel, allHorizontalView, detailOverviewLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
     private lazy var buttonView: UIView = {
-        let view = UIView()
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemBackground
         view.layer.shadowColor = UIColor.systemGray4.cgColor
         view.layer.shadowOpacity = 0.4
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private let detailImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailImageView
@@ -54,7 +65,8 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
     }()
 
     private let detailTagLineLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 22)
@@ -63,7 +75,8 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
     }()
 
     private let detailStarImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
         imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailStarImageLabel
@@ -71,15 +84,17 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
     }()
 
     private let detailAverageVoteLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 18)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailAverageVoteLabel
         return label
     }()
 
     private lazy var horizontalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [detailStarImageView, detailAverageVoteLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -88,24 +103,27 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
     }()
 
     private let detailGenresLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailGenresLabel
         return label
     }()
 
     private let detailReleaseDateLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 18)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailReleaseDateLabel
         return label
     }()
 
     private lazy var allHorizontalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [detailGenresLabel, horizontalStackView, detailReleaseDateLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
@@ -114,21 +132,32 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
     }()
 
     private lazy var allHorizontalView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray4.withAlphaComponent(0.5)
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGray5.withAlphaComponent(0.6)
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private let detailOverviewLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.italicSystemFont(ofSize: 20)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailOverviewLabel
         return label
+    }()
+
+    private lazy var horizontalButtonStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [officialButton, imdbButton, favButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 10
+        return stackView
     }()
 
     private let officialButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailOfficialButton)
@@ -137,24 +166,15 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
 
     private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailFavButton)
 
-    private lazy var horizontalButtonStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [officialButton, imdbButton, favButton])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        return stackView
-    }()
-
     private let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailAddToWatchButton)
 
     private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailMakeCommentButton)
 
     private let detailPopup = CustomPopupVC(title: "Rate The Product", buttonText: "Make Comment")
 
-// MARK: - Life Cycle
-    init(movieDetails: MovieDetails) {
-        self.movieDetails = movieDetails
+    // MARK: - Life Cycle
+    init(movie: MovieDetails) {
+        self.movie = movie
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -164,37 +184,36 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
+        viewModel.view = self
+        viewModel.viewDidLoad()
+        detailPopup.delegate = self
+    }
+}
+// MARK: - Functions
+extension MovieDetailVC: MovieDetailVCProtocol {
+    func configureDesign() {
+        view.backgroundColor = .systemBackground
+        navigationItem.title = movie._title
     }
 
-// MARK: - Functions
-    func configure() {
-        detailPopup.delegate = self
-
-        addUIElements()
-        drawDesign()
-        setUpDatas()
-
+    func configureSetupUIs() {
         makeScrollView()
         makeStackView()
-
         makeDetailImageView()
         makeDetailTagLineLabel()
         makeAllHorizontalStackView()
         makeAllHorizontalView()
         makeDetailOverviewLabel()
-
         makeButtonView()
         makeHorizontalButtonStackView()
-        makeMovieButton()
+        makeOfficialButton()
         makeImdbButton()
         makeFavButton()
-
         makeAddToWatchListButton()
         makeCommentButton()
     }
 
-    func addUIElements() {
+    func configureAddSubViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         scrollView.addSubview(addToWatchListButton)
@@ -208,27 +227,20 @@ final class MovieDetailVC: UIViewController, PopupWindowDelegate {
         horizontalButtonStackView.addArrangedSubview(favButton)
     }
 
-    func drawDesign() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = movieDetails.title
-    }
-
-    func setUpDatas() {
-        detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.BASE_IMAGE_URL.rawValue + (movieDetails.posterPath ?? "")))
-        detailAverageVoteLabel.text = String(format: "%.1f", movieDetails.voteAverage ?? 0.0)
-        detailReleaseDateLabel.text = String((movieDetails.releaseDate?.split(separator: "-").first) ?? "")
-        detailGenresLabel.text = movieDetails.genres?.first?.name
-        detailOverviewLabel.text = movieDetails.overview?.trimmingCharacters(in: .whitespaces)
-        detailTagLineLabel.text = movieDetails.tagline?.trimmingCharacters(in: .whitespaces)
-    }
-
-    func didTapPopupButton() {
-        showToast(message: "Thanks for your comment.", seconds: 1.5, color: .systemGreen, style: .alert)
+    func configureSetupDatas() {
+        detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: movie._posterPath)))
+        detailTagLineLabel.text = movie._tagline.trimmingCharacters(in: .whitespaces)
+        detailOverviewLabel.text = movie._overview.trimmingCharacters(in: .whitespaces)
+        detailAverageVoteLabel.text = String(format: "%.1f", movie.voteAverage ?? 0.0)
+        detailGenresLabel.text = movie.genres?.first?._name
+        detailReleaseDateLabel.text = String((movie._releaseDate.split(separator: "-").first) ?? "")
     }
 }
 
-// MARK: - SnapKit - ScrolView
-extension MovieDetailVC {
+extension MovieDetailVC: PopupWindowDelegate {
+    func didTapPopupButton() {
+        showToast(message: "Thanks for your comment.", seconds: 1.5, color: .systemGreen, style: .alert)
+    }
 
     func makeScrollView() {
         scrollView.snp.makeConstraints { make in
@@ -247,9 +259,79 @@ extension MovieDetailVC {
 
     func makeDetailImageView() {
         detailImageView.snp.makeConstraints { make in
-            make.height.equalTo(350)
-            make.width.equalTo(250)
-            make.top.equalToSuperview().offset(15)
+            make.height.equalTo(CGFloat.deviceHeight / 2.2)
+            make.width.equalTo(CGFloat.deviceWidth / 1.6)
+            make.top.equalToSuperview().offset(padding)
+        }
+    }
+
+    func makeDetailTagLineLabel() {
+        detailTagLineLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+    }
+
+    func makeAllHorizontalStackView() {
+        allHorizontalStackView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(padding)
+        }
+    }
+
+    func makeAllHorizontalView() {
+        allHorizontalView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(padding * 2)
+        }
+    }
+
+    func makeDetailOverviewLabel() {
+        detailOverviewLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(50)
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
+        }
+    }
+
+    func makeButtonView() {
+        buttonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(100)
+        }
+    }
+
+    func makeHorizontalButtonStackView() {
+        horizontalButtonStackView.snp.makeConstraints { make in
+            make.top.equalTo(buttonView.snp.top)
+            make.leading.trailing.equalToSuperview().inset(padding)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+    }
+
+    func makeOfficialButton() {
+        officialButton.addTarget(self, action: #selector(directToMovieUrl), for: .touchUpInside)
+
+        officialButton.snp.makeConstraints { make in
+            make.width.equalTo((CGFloat.deviceWidth - 40) / 3)
+            make.height.equalTo(50)
+        }
+    }
+
+    func makeImdbButton() {
+        imdbButton.addTarget(self, action: #selector(directToImdbUrl), for: .touchUpInside)
+
+        imdbButton.snp.makeConstraints { make in
+            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
+            make.height.equalTo(50)
+        }
+    }
+
+    func makeFavButton() {
+        favButton.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
+
+        favButton.snp.makeConstraints { make in
+            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
+            make.height.equalTo(50)
         }
     }
 
@@ -258,8 +340,42 @@ extension MovieDetailVC {
 
         addToWatchListButton.snp.makeConstraints { make in
             make.top.equalTo(detailImageView.snp.top)
-            make.leading.equalTo(detailImageView.snp.trailing).offset(15)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().offset(-padding)
             make.width.height.equalTo(50)
+        }
+    }
+
+    func makeCommentButton() {
+        commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
+
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(addToWatchListButton.snp.bottom).offset(padding)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().offset(-padding)
+            make.width.height.equalTo(50)
+        }
+    }
+
+    @objc func directToMovieUrl() {
+        guard let url = URL(string: movie._homepage) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    @objc func directToImdbUrl() {
+        guard let url = URL(string: ServiceEndpoints.IMDB_URL.rawValue + (movie._imdbID)) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    @objc func favButtonTapped() {
+        isHeartFilled.toggle()
+        if isHeartFilled {
+            showToast(message: "Added to favorites", seconds: 1.5, color: .systemRed, style: .alert)
+            favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+
+        } else {
+            showToast(message: "Removed from favorites", seconds: 1.5, color: .systemRed, style: .alert)
+            favButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
     }
 
@@ -275,16 +391,6 @@ extension MovieDetailVC {
         }
     }
 
-    func makeCommentButton() {
-        commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
-
-        commentButton.snp.makeConstraints { make in
-            make.top.equalTo(addToWatchListButton.snp.bottom).offset(15)
-            make.leading.equalTo(detailImageView.snp.trailing).offset(15)
-            make.width.height.equalTo(50)
-        }
-    }
-
     @objc func commentButtonClicked() {
         self.present(detailPopup, animated: true, completion: { [self] in
             detailPopup.view.superview?.isUserInteractionEnabled = true
@@ -294,101 +400,5 @@ extension MovieDetailVC {
 
     @objc func dismissOnTapOutside() {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    func makeDetailTagLineLabel() {
-        detailTagLineLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(40)
-        }
-    }
-
-    func makeAllHorizontalStackView() {
-        allHorizontalStackView.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(15)
-        }
-    }
-
-    func makeAllHorizontalView() {
-        allHorizontalView.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(30)
-        }
-    }
-
-    func makeDetailOverviewLabel() {
-        detailOverviewLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(50)
-            make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
-        }
-    }
-}
-
-// MARK: - SnapKit - ButtonView
-extension MovieDetailVC {
-
-    func makeButtonView() {
-        buttonView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(100)
-        }
-    }
-
-    func makeHorizontalButtonStackView() {
-        horizontalButtonStackView.snp.makeConstraints { make in
-            make.top.equalTo(buttonView.snp.top)
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-        }
-    }
-
-    func makeMovieButton() {
-        officialButton.addTarget(self, action: #selector(directToMovieUrl), for: .touchUpInside)
-
-        officialButton.snp.makeConstraints { make in
-            make.width.equalTo((view.frame.size.width - 40) / 3)
-            make.height.equalTo(50)
-        }
-    }
-
-    @objc func directToMovieUrl() {
-        guard let url = URL(string: movieDetails.homepage ?? "") else { return }
-        UIApplication.shared.open(url)
-    }
-
-    func makeImdbButton() {
-        imdbButton.addTarget(self, action: #selector(directToImdbUrl), for: .touchUpInside)
-
-        imdbButton.snp.makeConstraints { make in
-            make.width.equalTo(((view.frame.size.width - 40) / 3))
-            make.height.equalTo(50)
-        }
-    }
-
-    @objc func directToImdbUrl() {
-        guard let url = URL(string: ServiceEndpoints.IMDB_URL.rawValue + (movieDetails.imdbID ?? "")) else { return }
-        UIApplication.shared.open(url)
-    }
-
-    func makeFavButton() {
-        favButton.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
-
-        favButton.snp.makeConstraints { make in
-            make.width.equalTo(((view.frame.size.width - 40) / 3))
-            make.height.equalTo(50)
-        }
-    }
-
-    @objc func favButtonTapped() {
-        isHeartFilled.toggle()
-        if isHeartFilled {
-            showToast(message: "Added to favorites", seconds: 1.5, color: .systemRed, style: .alert)
-            favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-
-        } else {
-            showToast(message: "Removed from favorites", seconds: 1.5, color: .systemRed, style: .alert)
-            favButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
     }
 }

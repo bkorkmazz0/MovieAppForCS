@@ -8,94 +8,88 @@
 import UIKit
 import SnapKit
 
-protocol MovieOutput {
-    func saveAllDatas(values: [Result])
-    func selectedMovie(movieId: Int)
+protocol MovieVCProtocol: AnyObject {
+    func configureDesign()
+    func configureTableView()
+    func reloadTableView()
+    func navigateToDetailScreen(movie: MovieDetails)
 }
 
 final class MovieVC: UIViewController {
+    private let viewModel = MovieViewModel()
 
-// MARK: - Properties
-    private lazy var results: [Result] = []
-    lazy var viewModel: MovieProtocol = MovieViewModel()
+    private var tableView: UITableView!
 
-// MARK: - UI Elements
-    private lazy var tableView: UITableView = {
-        let tableView: UITableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.Identifier.movieTableViewCell.rawValue)
-        tableView.rowHeight = 230
-        tableView.separatorStyle = .none
-        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
-        return tableView
-    }()
-
-// MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        viewModel.setDelegate(output: self)
-        viewModel.fetchDatas()
-    }
 
-// MARK: - Functions
-    private func configure() {
-        addSubviews()
-        drawDesign()
-        makeTableView()
+        viewModel.view = self
+        viewModel.viewDidLoad()
     }
+}
 
-    private func drawDesign() {
+extension MovieVC: MovieVCProtocol {
+    func configureDesign() {
         view.backgroundColor = .systemBackground
+        navigationItem.backButtonTitle = "Back"
         title = "Popular Movies 🔥"
     }
 
-    private func addSubviews() {
+    func configureTableView() {
+        tableView = UITableView(frame: .zero)
         view.addSubview(tableView)
-    }
-}
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.movieTableViewCell)
+        tableView.rowHeight = CGFloat.deviceWidth * 0.58
+        tableView.separatorStyle = .none
+        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
 
-// MARK: - Tableview Extension
-extension MovieVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell: MovieCell = tableView.dequeueReusableCell(withIdentifier: MovieCell.Identifier.movieTableViewCell.rawValue) as? MovieCell else { return UITableViewCell() }
-        cell.selectionStyle = .none
-        cell.saveModel(model: results[indexPath.row])
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.movieOutput?.selectedMovie(movieId: results[indexPath.row].id ?? 0)
-    }
-}
-
-// MARK: - SnapKit Extension
-extension MovieVC {
-    private func makeTableView() {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(10)
         }
     }
-}
 
-extension MovieVC: MovieOutput {
-    func saveAllDatas(values: [Result]) {
-        results = values
-        tableView.reloadData()
+    func reloadTableView() {
+        tableView.reloadOnMainThread()
     }
 
-    func selectedMovie(movieId: Int) {
-        viewModel.fetchDetails(movieId: movieId) { data in
-            guard let data = data else { return }
-            self.navigationController?.pushViewController(MovieDetailVC(movieDetails: data), animated: true)
+    func navigateToDetailScreen(movie: MovieDetails) {
+        DispatchQueue.main.async {
+            let detailScreen = MovieDetailVC(movie: movie)
+            self.navigationController?.pushViewController(detailScreen, animated: true)
+        }
+    }
+}
+
+extension MovieVC: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.movies.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.movieTableViewCell) as? MovieCell else { return UITableViewCell() }
+        cell.selectionStyle = .none
+        cell.configureSetupDatas(model: viewModel.movies[indexPath.row])
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.getDetail(movieId: viewModel.movies[indexPath.row]._id)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+
+        if offsetY >= contentHeight - (2 * height) {
+            viewModel.getMovies()
         }
     }
 }

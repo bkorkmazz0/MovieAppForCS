@@ -9,13 +9,15 @@ import Foundation
 import Alamofire
 
 protocol MovieServiceProtocol {
-    func fetchAllDatas(response: @escaping ([Result]?) -> ())
-    func fetchAllDetails(movieId: Int, response: @escaping (MovieDetails?) -> ())
+    func fetchAllMovies(page: Int, response: @escaping ([Result]?) -> ())
+    func fetchAllMovieDetails(movieId: Int, response: @escaping (MovieDetails?) -> ())
 }
 
-struct MovieService: MovieServiceProtocol {
-    func fetchAllDatas(response: @escaping ([Result]?) -> ()) {
-        AF.request(ServiceEndpoints.moviesServiceEndPoint(), method: .get).responseDecodable(of: Movies.self) { (model) in
+final class MovieService: MovieServiceProtocol {
+
+    // MARK: - fetchAllMovies
+    func fetchAllMovies(page: Int, response: @escaping ([Result]?) -> ()) {
+        AF.request(ServiceEndpoints.movieService(page: page)).validate().responseDecodable(of: Movies.self) { model in
             guard let data = model.value else {
                 response(nil)
                 return
@@ -24,9 +26,10 @@ struct MovieService: MovieServiceProtocol {
         }
     }
 
-    func fetchAllDetails(movieId: Int, response: @escaping (MovieDetails?) -> ()) {
-        AF.request(ServiceEndpoints.movieDetailsServiceEndPoint(movieId: movieId), method: .get)
-            .responseDecodable(of: MovieDetails.self) { (model) in
+    // MARK: - fetchAllMovieDetails
+    func fetchAllMovieDetails(movieId: Int, response: @escaping (MovieDetails?) -> ()) {
+        AF.request(ServiceEndpoints.movieDetailService(movieId: movieId))
+            .validate().responseDecodable(of: MovieDetails.self) { model in
             guard let data = model.value else {
                 response(nil)
                 return

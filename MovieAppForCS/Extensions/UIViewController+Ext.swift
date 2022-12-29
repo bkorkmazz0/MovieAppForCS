@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 extension UIViewController {
-
     func showToast(message: String, seconds: Double, color: UIColor, style: UIAlertController.Style) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: style)
         alert.view.layer.cornerRadius = 20
