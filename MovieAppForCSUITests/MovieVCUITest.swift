@@ -7,43 +7,78 @@
 
 import XCTest
 
-final class MovieVCUITest: XCTestCase {
+class MovieVCUITest: XCTestCase {
 
-    let app = XCUIApplication()
+    var app: XCUIApplication!
 
     override func setUp() {
         super.setUp()
-        continueAfterFailure = false
+        app = XCUIApplication()
         app.launch()
+        continueAfterFailure = false
     }
 
     override func tearDown() {
         super.tearDown()
     }
 
-    func testScrollingTableView() throws {
+    func testAllItemsVerifyCase() {
 
-        let tableView = app.tables[UIAccessibleIdentifiers.MovieVC.moviesTableView].cells
-        let numberOfRows = tableView
+        let moviesNavigationBarTitle = app.navigationBars.staticTexts[UITestConstant.MovieVC.moviesNavigationBarTitle]
 
-        // Scroll to the last row
-        let lastIndexPath = IndexPath(row: numberOfRows - 1, section: 0)
-        tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
+        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
 
-        // Verify that the last cell is visible
-        let lastCell = tableView.cellForRow(at: lastIndexPath)
-        XCTAssertNotNil(lastCell)
+        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        let cellAverageVoteLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellAverageVoteLabel]
+        let cellReleaseDateLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellReleaseDateLabel]
+        let cellImageView = tableViewCell.images[UITestConstant.MovieCell.movieCellImageView]
+        let cellStarImageView = tableViewCell.images[UITestConstant.MovieCell.movieCellStarImageView]
+        let toDetailButton = tableViewCell.buttons[UITestConstant.MovieCell.movieCellDirectButton]
 
-        // Scroll to the first row
-        let firstIndexPath = IndexPath(row: 0, section: 0)
-        tableView.scrollToRow(at: firstIndexPath, at: .top, animated: false)
+        XCTAssertTrue(moviesNavigationBarTitle.exists)
 
-        // Verify that the first cell is visible
-        let firstCell = tableView.cellForRow(at: firstIndexPath)
-        XCTAssertNotNil(firstCell)
+        XCTAssertTrue(tableViewCell.exists)
+
+        XCTAssertTrue(cellTitleLabel.exists)
+        XCTAssertTrue(cellAverageVoteLabel.exists)
+        XCTAssertTrue(cellReleaseDateLabel.exists)
+        XCTAssertTrue(cellImageView.exists)
+        XCTAssertTrue(cellStarImageView.exists)
+        XCTAssertTrue(toDetailButton.exists)
+
     }
 
+    func testCellToDetailCase() {
 
+        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
+
+        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        let cellText = cellTitleLabel.label
+
+        let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
+
+        cellTitleLabel.tap()
+        sleep(1)
+        XCTAssertTrue(app.staticTexts[cellText].exists)
+        backButton.tap()
+
+    }
+
+    func testScrollingTableViewCase() {
+
+        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
+
+        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        let cellText = cellTitleLabel.label
+
+        let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
+
+        cellTitleLabel.tap()
+        sleep(1)
+        XCTAssertTrue(app.staticTexts[cellText].exists)
+        backButton.tap()
+
+    }
 
 //    // Scroll down
 //    tableView.swipeUp()

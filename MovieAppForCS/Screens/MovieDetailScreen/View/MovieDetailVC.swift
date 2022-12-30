@@ -145,7 +145,7 @@ final class MovieDetailVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.italicSystemFont(ofSize: 20)
+        label.font = UIFont.italicSystemFont(ofSize: 18)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailOverviewLabel
         return label
     }()
@@ -194,6 +194,7 @@ extension MovieDetailVC: MovieDetailVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
         navigationItem.title = movie._title
+        navigationController?.navigationBar.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailNavigationBar
     }
 
     func configureSetupUIs() {

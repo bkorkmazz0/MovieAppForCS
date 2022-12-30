@@ -1,17 +1,18 @@
 //
-//  UITestIdentifier.swift
-//  MovieAppForCS
+//  UITestConstant.swift
+//  MovieAppForCSUITests
 //
-//  Created by Berkan Korkmaz on 11.12.2022.
+//  Created by Berkan Korkmaz on 29.12.2022.
 //
 
 import Foundation
 
-struct UIAccessibleIdentifiers {
+struct UITestConstant {
 
     // MARK: - MovieVC
     struct MovieVC {
         static let moviesTableView = "movies-table-view"
+        static let moviesNavigationBarTitle = "Popular Movies 🔥"
     }
 
     // MARK: - MovieCell

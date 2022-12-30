@@ -74,11 +74,18 @@ final class MovieCell: UITableViewCell {
         configureDesign()
         configureAddSubViews()
         configureSetupUIs()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+//    }
 
     // MARK: - Functions
     func configureDesign() {
@@ -86,7 +93,7 @@ final class MovieCell: UITableViewCell {
         contentView.backgroundColor = .lightGray.withAlphaComponent(0.3)
         contentView.layer.borderColor = UIColor.systemBackground.cgColor
     }
-    
+
     func configureAddSubViews() {
         addSubview(cellToDetailButton)
         addSubview(cellImageView)
@@ -95,7 +102,7 @@ final class MovieCell: UITableViewCell {
         addSubview(cellAverageVoteLabel)
         addSubview(cellReleaseDateLabel)
     }
-    
+
     func configureSetupUIs() {
         makeImageView()
         makeTitleLabel()

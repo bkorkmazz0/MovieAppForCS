@@ -43,7 +43,6 @@ extension MovieVC: MovieVCProtocol {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.movieTableViewCell)
-        tableView.rowHeight = CGFloat.deviceWidth * 0.58
         tableView.separatorStyle = .none
         tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
 
@@ -81,6 +80,10 @@ extension MovieVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.getDetail(movieId: viewModel.movies[indexPath.row]._id)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat.deviceWidth * 0.58
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
