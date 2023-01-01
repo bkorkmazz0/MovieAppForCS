@@ -22,7 +22,7 @@ class MovieDetailVCUITest: XCTestCase {
         super.tearDown()
     }
     
-    func testDetailAllItemsVerifyCase() {
+    func testDetailItemsVerifyCase() {
         
         let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
         tableViewCell.tap()
@@ -63,16 +63,6 @@ class MovieDetailVCUITest: XCTestCase {
 
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
 //    func testScrollingTableView() throws {
 //
         //exist

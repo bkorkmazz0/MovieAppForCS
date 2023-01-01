@@ -22,7 +22,6 @@ struct UIAccessibleIdentifiers {
         static let movieCellStarImageView = "movie-cell-star-image-view"
         static let movieCellAverageVoteLabel = "movie-cell-average-vote-label"
         static let movieCellReleaseDateLabel = "movie-cell-release-date-label"
-        static let movieCellDirectButton = "movie-cell-direct-button"
     }
 
     // MARK: - MovieDetailVC

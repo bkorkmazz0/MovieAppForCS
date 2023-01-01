@@ -33,7 +33,6 @@ class MovieVCUITest: XCTestCase {
         let cellReleaseDateLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellReleaseDateLabel]
         let cellImageView = tableViewCell.images[UITestConstant.MovieCell.movieCellImageView]
         let cellStarImageView = tableViewCell.images[UITestConstant.MovieCell.movieCellStarImageView]
-        let toDetailButton = tableViewCell.buttons[UITestConstant.MovieCell.movieCellDirectButton]
 
         sleep(1)
         
@@ -46,7 +45,6 @@ class MovieVCUITest: XCTestCase {
         XCTAssertTrue(cellReleaseDateLabel.exists)
         XCTAssertTrue(cellImageView.exists)
         XCTAssertTrue(cellStarImageView.exists)
-        XCTAssertTrue(toDetailButton.exists)
 
     }
 
@@ -68,45 +66,48 @@ class MovieVCUITest: XCTestCase {
 
     }
 
-    func testScrollingTableViewCase() {
+    func testGetSecondPageInTableViewCase() {
 
-//        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
-//
-//        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
-//        let cellText = cellTitleLabel.label
-//
-//        let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
-//
-//        cellTitleLabel.tap()
-//        sleep(1)
-//        XCTAssertTrue(app.staticTexts[cellText].exists)
-//        backButton.tap()
+        let tableView = app.tables[UITestConstant.MovieVC.moviesTableView]
+        let lastCell = tableView.cells.element(boundBy: 24)
+
+        let MAX_SCROLLS = 10
+        var count = 0
+        while lastCell.isHittable == false && count < MAX_SCROLLS {
+            app.swipeUp()
+            count += 1
+        }
+        
+        let cellTitleLabel = lastCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        XCTAssertTrue(cellTitleLabel.exists)
 
     }
+    
+    func testScrollingTableViewCase() {
 
-//    // Scroll down
-//    tableView.swipeUp()
-//
-//    // Verify that the last cell is visible
-//    let lastCell = tableView.cells.element(boundBy: tableView.cells.count - 1)
-//    XCTAssertTrue(lastCell.isHittable)
-//
-//    // Scroll up
-//    tableView.swipeDown()
-//
-//    // Verify that the first cell is visible
-//    let firstCell = tableView.cells.element(boundBy: 0)
-//    XCTAssertTrue(firstCell.isHittable)
+        let tableView = app.tables[UITestConstant.MovieVC.moviesTableView]
+        let lastCell = tableView.cells.element(boundBy: 19)
+        let firstCell = tableView.cells.element(boundBy: 0)
+        
+        let MAX_SCROLLS = 10
+        var count1 = 0
+        var count2 = 0
+        
+        while lastCell.isHittable == false && count1 < MAX_SCROLLS {
+            app.swipeUp()
+            count1 += 1
+        }
+        
+        let lastCellTitleLabel = lastCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        XCTAssertTrue(lastCellTitleLabel.exists)
 
-//            // Scroll down
-//        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-//        let lastRowIndexPath = IndexPath(row: lastRowIndex, section: 0)
-//        let lastCell = tableView.cellForRow(at: lastRowIndexPath)
-//        XCTAssert(lastCell.isVisible, "Last cell is not visible")
-//
-//        // Scroll up
-//        let firstRowIndexPath = IndexPath(row: 0, section: 0)
-//        let firstCell = tableView.cellForRow(at: firstRowIndexPath)
-//        XCTAssert(firstCell.isVisible, "First cell is not visible")
-
+        while firstCell.isHittable == false && count2 < MAX_SCROLLS {
+            app.swipeDown()
+            count2 += 1
+        }
+        
+        let firstCellTitleLabel = firstCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+        XCTAssertTrue(firstCellTitleLabel.exists)
+        
+    }
 }

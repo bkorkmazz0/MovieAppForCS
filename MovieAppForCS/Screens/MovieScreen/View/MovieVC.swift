@@ -44,6 +44,7 @@ extension MovieVC: MovieVCProtocol {
         tableView.dataSource = self
         tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.movieTableViewCell)
         tableView.separatorStyle = .none
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -4)
         tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
 
         tableView.snp.makeConstraints { make in
@@ -74,6 +75,7 @@ extension MovieVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.movieTableViewCell) as? MovieCell else { return UITableViewCell() }
         cell.selectionStyle = .none
+        cell.accessoryType = .disclosureIndicator
         cell.configureSetupDatas(model: viewModel.movies[indexPath.row])
         return cell
     }

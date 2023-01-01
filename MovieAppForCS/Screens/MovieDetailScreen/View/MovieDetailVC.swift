@@ -135,7 +135,7 @@ final class MovieDetailVC: UIViewController {
     private lazy var allHorizontalView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray5.withAlphaComponent(0.6)
+        view.backgroundColor = .lightGray.withAlphaComponent(0.3)
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
         view.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailAllHorizontalView

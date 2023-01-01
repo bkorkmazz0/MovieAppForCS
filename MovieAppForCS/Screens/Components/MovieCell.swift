@@ -30,8 +30,8 @@ final class MovieCell: UITableViewCell {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.systemGray5.cgColor
-        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = UIColor.systemBackground.cgColor
+        imageView.layer.cornerRadius = 15
         imageView.clipsToBounds = true
         imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellImageView
         return imageView
@@ -76,14 +76,11 @@ final class MovieCell: UITableViewCell {
         return label
     }()
 
-    private let cellToDetailButton: CustomButton = CustomButton(color: .systemBlue, title: "", systemImageName: "arrow.right", identifier: UIAccessibleIdentifiers.MovieCell.movieCellDirectButton)
-
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureAddSubViews()
         configureSetupUIs()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
 
     required init?(coder: NSCoder) {
@@ -94,7 +91,6 @@ final class MovieCell: UITableViewCell {
 
     func configureAddSubViews() {
         addSubview(containerView)
-        containerView.addSubview(cellToDetailButton)
         containerView.addSubview(cellImageView)
         containerView.addSubview(cellTitleLabel)
         containerView.addSubview(cellStarImageView)
@@ -109,7 +105,6 @@ final class MovieCell: UITableViewCell {
         makeStarImageView()
         makeAverageVoteLabel()
         makeReleaseDateLabel()
-        makeCellToDetailButton()
     }
 
     func configureSetupDatas(model: Result) {
@@ -134,7 +129,7 @@ extension MovieCell {
         cellImageView.snp.makeConstraints { make in
             make.width.equalTo(CGFloat.deviceWidth * 0.35)
             make.top.bottom.equalTo(contentView).inset(padding)
-            make.leading.equalTo(padding-5)
+            make.leading.equalTo(padding - 5)
         }
     }
 
@@ -142,7 +137,7 @@ extension MovieCell {
         cellTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(cellImageView.snp.trailing).offset(padding)
             make.top.equalToSuperview().offset(padding)
-            make.trailing.equalToSuperview().offset(-padding)
+            make.trailing.equalToSuperview().offset(-(padding * 2))
         }
     }
 
@@ -169,14 +164,6 @@ extension MovieCell {
             make.height.equalTo(24)
             make.leading.equalTo(cellAverageVoteLabel.snp.trailing).offset(padding * 2)
             make.top.equalTo(cellTitleLabel.snp.bottom).offset(padding)
-        }
-    }
-
-    func makeCellToDetailButton() {
-        cellToDetailButton.snp.makeConstraints { make in
-            make.height.width.equalTo(35)
-            make.trailing.equalToSuperview().offset(-padding)
-            make.centerY.equalTo(contentView.snp.centerY)
         }
     }
 }
