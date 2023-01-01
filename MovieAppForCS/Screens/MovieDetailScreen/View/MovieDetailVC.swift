@@ -52,6 +52,7 @@ final class MovieDetailVC: UIViewController {
         view.backgroundColor = .systemBackground
         view.layer.shadowColor = UIColor.systemGray4.cgColor
         view.layer.shadowOpacity = 0.4
+        view.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailButtonView
         return view
     }()
 
@@ -137,6 +138,7 @@ final class MovieDetailVC: UIViewController {
         view.backgroundColor = .systemGray5.withAlphaComponent(0.6)
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
+        view.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailAllHorizontalView
         return view
     }()
 

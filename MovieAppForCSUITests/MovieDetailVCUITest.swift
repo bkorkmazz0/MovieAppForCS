@@ -9,20 +9,72 @@ import XCTest
 
 class MovieDetailVCUITest: XCTestCase {
 
-    let app = XCUIApplication()
+    var app: XCUIApplication!
 
     override func setUp() {
         super.setUp()
-        continueAfterFailure = false
+        app = XCUIApplication()
         app.launch()
+        continueAfterFailure = false
     }
 
     override func tearDown() {
         super.tearDown()
     }
-
-    func testScrollingTableView() throws {
+    
+    func testDetailAllItemsVerifyCase() {
         
+        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
+        tableViewCell.tap()
+        
+        let detailNavBarTitle = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar]
+        let detailImageView = app.images[UITestConstant.MovieDetailVC.movieDetailImageView]
+        let detailAddToWatchButton = app.buttons[UITestConstant.MovieDetailVC.movieDetailAddToWatchButton]
+        let detailCommentButton = app.buttons[UITestConstant.MovieDetailVC.movieDetailMakeCommentButton]
+        let detailTagLineLabel = app.staticTexts[UITestConstant.MovieDetailVC.movieDetailTagLineLabel]
+        let detailGenresLabel = app.staticTexts[UITestConstant.MovieDetailVC.movieDetailGenresLabel]
+        let detailStarImageView = app.images[UITestConstant.MovieDetailVC.movieDetailStarImageLabel]
+        let detailAverageVoteLabel = app.staticTexts[UITestConstant.MovieDetailVC.movieDetailAverageVoteLabel]
+        let detailReleaseDateLabel = app.staticTexts[UITestConstant.MovieDetailVC.movieDetailReleaseDateLabel]
+        let detailAllHorizontalView = app.otherElements[UITestConstant.MovieDetailVC.movieDetailAllHorizontalView]
+        let detailOverviewLabel = app.staticTexts[UITestConstant.MovieDetailVC.movieDetailOverviewLabel]
+        let detailOfficialButton = app.buttons[UITestConstant.MovieDetailVC.movieDetailOfficialButton]
+        let detailImdbButton = app.buttons[UITestConstant.MovieDetailVC.movieDetailImdbButton]
+        let detailFavButton = app.buttons[UITestConstant.MovieDetailVC.movieDetailFavButton]
+        let detailButtonView = app.otherElements[UITestConstant.MovieDetailVC.movieDetailButtonView]
+        
+        sleep(1)
+
+        XCTAssertTrue(detailNavBarTitle.exists)
+        XCTAssertTrue(detailImageView.exists)
+        XCTAssertTrue(detailAddToWatchButton.exists)
+        XCTAssertTrue(detailCommentButton.exists)
+        XCTAssertTrue(detailTagLineLabel.exists)
+        XCTAssertTrue(detailGenresLabel.exists)
+        XCTAssertTrue(detailStarImageView.exists)
+        XCTAssertTrue(detailAverageVoteLabel.exists)
+        XCTAssertTrue(detailReleaseDateLabel.exists)
+        XCTAssertTrue(detailAllHorizontalView.exists)
+        XCTAssertTrue(detailOverviewLabel.exists)
+        XCTAssertTrue(detailOfficialButton.exists)
+        XCTAssertTrue(detailImdbButton.exists)
+        XCTAssertTrue(detailFavButton.exists)
+        XCTAssertTrue(detailButtonView.exists)
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+//    func testScrollingTableView() throws {
+//
         //exist
 //        
 //        let app = app2
@@ -62,5 +114,5 @@ class MovieDetailVCUITest: XCTestCase {
 //        breadcrumbButton/*@START_MENU_TOKEN@*/.press(forDuration: 0.1);/*[[".tap()",".press(forDuration: 0.1);"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
 //        app.navigationBars["navgation-bar"].buttons["Back"]/*@START_MENU_TOKEN@*/.press(forDuration: 0.1);/*[[".tap()",".press(forDuration: 0.1);"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
 //        
-    }
+//    }
 }

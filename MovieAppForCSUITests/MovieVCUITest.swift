@@ -22,7 +22,7 @@ class MovieVCUITest: XCTestCase {
         super.tearDown()
     }
 
-    func testAllItemsVerifyCase() {
+    func testHomeItemsVerifyCase() {
 
         let moviesNavigationBarTitle = app.navigationBars.staticTexts[UITestConstant.MovieVC.moviesNavigationBarTitle]
 
@@ -35,10 +35,12 @@ class MovieVCUITest: XCTestCase {
         let cellStarImageView = tableViewCell.images[UITestConstant.MovieCell.movieCellStarImageView]
         let toDetailButton = tableViewCell.buttons[UITestConstant.MovieCell.movieCellDirectButton]
 
+        sleep(1)
+        
         XCTAssertTrue(moviesNavigationBarTitle.exists)
-
+        
         XCTAssertTrue(tableViewCell.exists)
-
+        
         XCTAssertTrue(cellTitleLabel.exists)
         XCTAssertTrue(cellAverageVoteLabel.exists)
         XCTAssertTrue(cellReleaseDateLabel.exists)
@@ -54,29 +56,31 @@ class MovieVCUITest: XCTestCase {
 
         let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
         let cellText = cellTitleLabel.label
+        cellTitleLabel.tap()
 
         let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
 
-        cellTitleLabel.tap()
         sleep(1)
+        
         XCTAssertTrue(app.staticTexts[cellText].exists)
+        
         backButton.tap()
 
     }
 
     func testScrollingTableViewCase() {
 
-        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
-
-        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
-        let cellText = cellTitleLabel.label
-
-        let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
-
-        cellTitleLabel.tap()
-        sleep(1)
-        XCTAssertTrue(app.staticTexts[cellText].exists)
-        backButton.tap()
+//        let tableViewCell = app.tables[UITestConstant.MovieVC.moviesTableView].cells.element(boundBy: 0)
+//
+//        let cellTitleLabel = tableViewCell.staticTexts[UITestConstant.MovieCell.movieCellTitleLabel]
+//        let cellText = cellTitleLabel.label
+//
+//        let backButton = app.navigationBars[UITestConstant.MovieDetailVC.movieDetailNavigationBar].buttons["Back"]
+//
+//        cellTitleLabel.tap()
+//        sleep(1)
+//        XCTAssertTrue(app.staticTexts[cellText].exists)
+//        backButton.tap()
 
     }
 

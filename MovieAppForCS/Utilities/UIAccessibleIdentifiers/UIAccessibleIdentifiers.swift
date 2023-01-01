@@ -12,6 +12,7 @@ struct UIAccessibleIdentifiers {
     // MARK: - MovieVC
     struct MovieVC {
         static let moviesTableView = "movies-table-view"
+        static let moviesNavigationBarTitle = "Popular Movies 🔥"
     }
 
     // MARK: - MovieCell
@@ -39,6 +40,8 @@ struct UIAccessibleIdentifiers {
         static let movieDetailImdbButton = "movie-detail-imdb-button"
         static let movieDetailFavButton = "movie-detail-fav-button"
         static let movieDetailNavigationBar = "movie-detail-navigation-bar"
+        static let movieDetailAllHorizontalView = "movie-detail-all-horzontal-view"
+        static let movieDetailButtonView = "movie-detail-button-view"
     }
 
     // MARK: - CustomPopupVC

@@ -16,19 +16,29 @@ final class MovieCell: UITableViewCell {
     private let padding: CGFloat = 15
 
     // MARK: - UI Elements
+    private lazy var containerView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 20
+        view.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        view.layer.borderColor = UIColor.systemBackground.cgColor
+        view.clipsToBounds = true
+        return view
+    }()
+
     private let cellImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.systemGray5.cgColor
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         imageView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellImageView
         return imageView
     }()
 
     private let cellTitleLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 24)
@@ -37,7 +47,7 @@ final class MovieCell: UITableViewCell {
     }()
 
     private let cellStarImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "star.fill")
         imageView.tintColor = .systemYellow
@@ -46,7 +56,7 @@ final class MovieCell: UITableViewCell {
     }()
 
     private let cellAverageVoteLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
         label.accessibilityIdentifier = UIAccessibleIdentifiers.MovieCell.movieCellAverageVoteLabel
@@ -54,7 +64,7 @@ final class MovieCell: UITableViewCell {
     }()
 
     private let cellReleaseDateLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
         label.backgroundColor = .systemGray4.withAlphaComponent(0.4)
@@ -71,7 +81,6 @@ final class MovieCell: UITableViewCell {
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureDesign()
         configureAddSubViews()
         configureSetupUIs()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
@@ -80,30 +89,21 @@ final class MovieCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//
-//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-//    }
 
     // MARK: - Functions
-    func configureDesign() {
-        contentView.layer.cornerRadius = 20
-        contentView.backgroundColor = .lightGray.withAlphaComponent(0.3)
-        contentView.layer.borderColor = UIColor.systemBackground.cgColor
-    }
 
     func configureAddSubViews() {
-        addSubview(cellToDetailButton)
-        addSubview(cellImageView)
-        addSubview(cellTitleLabel)
-        addSubview(cellStarImageView)
-        addSubview(cellAverageVoteLabel)
-        addSubview(cellReleaseDateLabel)
+        addSubview(containerView)
+        containerView.addSubview(cellToDetailButton)
+        containerView.addSubview(cellImageView)
+        containerView.addSubview(cellTitleLabel)
+        containerView.addSubview(cellStarImageView)
+        containerView.addSubview(cellAverageVoteLabel)
+        containerView.addSubview(cellReleaseDateLabel)
     }
 
     func configureSetupUIs() {
+        makeContainerView()
         makeImageView()
         makeTitleLabel()
         makeStarImageView()
@@ -123,10 +123,18 @@ final class MovieCell: UITableViewCell {
 // MARK: - SnapKit
 extension MovieCell {
 
+    func makeContainerView() {
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(5)
+        }
+    }
+
     func makeImageView() {
         cellImageView.snp.makeConstraints { make in
             make.width.equalTo(CGFloat.deviceWidth * 0.35)
-            make.top.leading.bottom.equalTo(contentView).inset(padding)
+            make.top.bottom.equalTo(contentView).inset(padding)
+            make.leading.equalTo(padding-5)
         }
     }
 
@@ -166,7 +174,7 @@ extension MovieCell {
 
     func makeCellToDetailButton() {
         cellToDetailButton.snp.makeConstraints { make in
-            make.height.width.equalTo(padding * 2)
+            make.height.width.equalTo(35)
             make.trailing.equalToSuperview().offset(-padding)
             make.centerY.equalTo(contentView.snp.centerY)
         }
