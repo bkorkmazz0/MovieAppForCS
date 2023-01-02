@@ -25,15 +25,15 @@ struct Result: Codable {
         case title
         case voteAverage = "vote_average"
     }
-    
+
     var _id: Int {
         id ?? Int.min
     }
-    
+
     var _posterPath: String {
         posterPath ?? "N/A"
     }
-    
+
     var _title: String {
         title ?? "N/A"
     }

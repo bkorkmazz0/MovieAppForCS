@@ -38,7 +38,7 @@ extension MovieVC: MovieVCProtocol {
     func configureTableView() {
         tableView = UITableView(frame: .zero)
         view.addSubview(tableView)
-        
+
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
@@ -83,11 +83,11 @@ extension MovieVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.getDetail(movieId: viewModel.movies[indexPath.row]._id)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         CGFloat.deviceWidth * 0.58
     }
-    
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

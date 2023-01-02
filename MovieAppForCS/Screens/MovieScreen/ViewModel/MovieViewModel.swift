@@ -44,7 +44,7 @@ extension MovieViewModel: MovieViewModelProtocol {
         service.fetchAllMovieDetails(movieId: movieId) { [weak self] returnedDetail in
             guard let self = self else { return }
             guard let returnedDetail = returnedDetail else { return }
-            
+
             self.view?.navigateToDetailScreen(movie: returnedDetail)
         }
     }

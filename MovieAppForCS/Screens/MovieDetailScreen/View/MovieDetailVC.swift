@@ -290,7 +290,7 @@ extension MovieDetailVC: PopupWindowDelegate {
 
     func makeDetailOverviewLabel() {
         detailOverviewLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(50)
+            make.leading.trailing.equalToSuperview().inset(40)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
         }
     }

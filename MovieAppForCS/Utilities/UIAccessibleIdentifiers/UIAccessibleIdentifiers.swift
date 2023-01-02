@@ -53,10 +53,11 @@ struct UIAccessibleIdentifiers {
 
     // MARK: - CustomToastMessage
     struct CustomToastMessage {
-//            static let productCellCurrentPriceFirstPartLabel = "product-cell-current-price-first-part-label"
-//            static let productCellCurrentOldFirstPartLabel = "product-cell-current-old-first-part-label"
-//            static let productCellRatingAlternateLabel = "product-cell-rating-alternate-label"
-//            static let collectionView = "productlist-collection-view"
-//            static let itemFav = "product-item-fav"
+        static let addedToWatchlistAlert = "Added to watchlist"
+        static let remowedFromWatchlistAlert = "Removed from watchlist"
+        static let addedToFavoritesAlert = "Added to favorites"
+        static let remowedFromFavoritesAlert = "Removed from favorites"
+        static let popupBlankMessageAlert = "TextView cannot be left blank!"
+        static let popupThanksMessageAlert = "Thanks for your comment."
     }
 }

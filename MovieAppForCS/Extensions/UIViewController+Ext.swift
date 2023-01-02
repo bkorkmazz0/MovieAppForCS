@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 extension UIViewController {
     func showToast(message: String, seconds: Double, color: UIColor, style: UIAlertController.Style) {
