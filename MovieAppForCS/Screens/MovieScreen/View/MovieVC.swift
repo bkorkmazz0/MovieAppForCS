@@ -10,7 +10,6 @@ import SnapKit
 
 protocol MovieVCProtocol: AnyObject {
     func configureDesign()
-    func configureTableView()
     func reloadTableView()
     func navigateToDetailScreen(movie: MovieDetails)
 }
@@ -18,7 +17,25 @@ protocol MovieVCProtocol: AnyObject {
 final class MovieVC: UIViewController {
     private let viewModel = MovieViewModel()
 
-    private var tableView: UITableView!
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.MovieCellConstant.movieTableViewCellIdentifier.rawValue)
+        tableView.separatorStyle = .none
+        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
+
+        view.addSubview(tableView)
+
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+        }
+        return tableView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,31 +48,15 @@ final class MovieVC: UIViewController {
 extension MovieVC: MovieVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
+        navigationItem.backButtonDisplayMode = .minimal
         navigationItem.backButtonTitle = "Back"
         title = "Popular Movies 🔥"
     }
 
-    func configureTableView() {
-        tableView = UITableView(frame: .zero)
-        view.addSubview(tableView)
-
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.movieTableViewCell)
-        tableView.separatorStyle = .none
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -4)
-        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
-
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(10)
-        }
-    }
-
     func reloadTableView() {
-        tableView.reloadOnMainThread()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 
     func navigateToDetailScreen(movie: MovieDetails) {
@@ -73,9 +74,7 @@ extension MovieVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.movieTableViewCell) as? MovieCell else { return UITableViewCell() }
-        cell.selectionStyle = .none
-        cell.accessoryType = .disclosureIndicator
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.MovieCellConstant.movieTableViewCellIdentifier.rawValue) as? MovieCell else { return UITableViewCell() }
         cell.configureSetupDatas(model: viewModel.movies[indexPath.row])
         return cell
     }

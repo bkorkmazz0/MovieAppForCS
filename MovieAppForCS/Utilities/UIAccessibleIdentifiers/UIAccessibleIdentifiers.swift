@@ -1,5 +1,5 @@
 //
-//  UITestIdentifier.swift
+//  UIAccessibleIdentifiers.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 11.12.2022.

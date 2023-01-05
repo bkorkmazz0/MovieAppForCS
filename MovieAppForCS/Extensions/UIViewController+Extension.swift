@@ -1,5 +1,5 @@
 //
-//  CustomToastMessage.swift
+//  UIViewController+Extension.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 9.12.2022.
@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func showToast(message: String, seconds: Double, color: UIColor, style: UIAlertController.Style) {
+    func showToastMessage(message: String, seconds: Double, color: UIColor, style: UIAlertController.Style) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: style)
         alert.view.layer.cornerRadius = 20
         alert.view.clipsToBounds = true

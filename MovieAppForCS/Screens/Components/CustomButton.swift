@@ -7,15 +7,7 @@
 
 import UIKit
 
-class CustomButton: UIButton {
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+final class CustomButton: UIButton {
 
     init(color: UIColor, title: String, systemImageName: String, identifier: String) {
         super.init(frame: .zero)
@@ -35,5 +27,9 @@ class CustomButton: UIButton {
         configuration?.imagePlacement = .trailing
 
         accessibilityIdentifier = identifier
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

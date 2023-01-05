@@ -1,5 +1,5 @@
 //
-//  UIColor+Ext.swift
+//  UIColor+Extension.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 1.01.2023.

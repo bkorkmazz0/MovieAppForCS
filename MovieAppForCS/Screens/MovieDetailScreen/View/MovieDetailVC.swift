@@ -23,16 +23,16 @@ final class MovieDetailVC: UIViewController {
     private let viewModel = MovieDetailViewModel()
     private var isHeartFilled = false
     private var isWatchFilled = false
-    private let padding: CGFloat = 15
+    private let padding = 15
 
     // MARK: - UI Elements
-    private lazy var scrollView: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .systemBackground
         scrollView.frame = CGRect(x: 0, y: 0, width: CGFloat.deviceWidth, height: CGFloat.deviceHeight)
         scrollView.contentSize = CGSize(width: CGFloat.deviceWidth, height: CGFloat.deviceHeight * 3)
-        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = true
         return scrollView
     }()
 
@@ -46,7 +46,7 @@ final class MovieDetailVC: UIViewController {
         return stackView
     }()
 
-    private lazy var buttonView: UIView = {
+    private let buttonView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemBackground
@@ -123,16 +123,15 @@ final class MovieDetailVC: UIViewController {
     }()
 
     private lazy var allHorizontalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [detailGenresLabel, horizontalStackView, detailReleaseDateLabel])
+        let stackView = UIStackView(arrangedSubviews: [detailGenresLabel, detailReleaseDateLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 30
         return stackView
     }()
 
-    private lazy var allHorizontalView: UIView = {
+    private let allHorizontalView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .lightGray.withAlphaComponent(0.3)
@@ -162,17 +161,40 @@ final class MovieDetailVC: UIViewController {
         return stackView
     }()
 
-    private let officialButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailOfficialButton)
+    private lazy var officialButton: CustomButton = {
+        let officialButton = CustomButton(color: .systemGreen, title: "Official", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailOfficialButton)
+        officialButton.addTarget(self, action: #selector(directToMovieUrl), for: .touchUpInside)
+        return officialButton
+    }()
 
-    private let imdbButton = CustomButton(color: .systemBlue, title: "IMDb", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailImdbButton)
+    private lazy var imdbButton: CustomButton = {
+        let imdbButton = CustomButton(color: .systemBlue, title: "IMDb", systemImageName: "play.rectangle", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailImdbButton)
+        imdbButton.addTarget(self, action: #selector(directToImdbUrl), for: .touchUpInside)
+        return imdbButton
+    }()
 
-    private let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailFavButton)
+    private lazy var favButton: CustomButton = {
+        let favButton = CustomButton(color: .systemRed, title: "", systemImageName: "heart", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailFavButton)
+        favButton.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
+        return favButton
+    }()
 
-    private let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailAddToWatchButton)
+    private lazy var addToWatchListButton: CustomButton = {
+        let addToWatchListButton = CustomButton(color: .systemOrange, title: "", systemImageName: "plus.app", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailAddToWatchButton)
+        addToWatchListButton.addTarget(self, action: #selector(addToWatchListButtonClicked), for: .touchUpInside)
+        return addToWatchListButton
+    }()
 
-    private let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailMakeCommentButton)
+    private lazy var commentButton: CustomButton = {
+        let commentButton = CustomButton(color: .systemCyan, title: "", systemImageName: "square.and.pencil", identifier: UIAccessibleIdentifiers.MovieDetailVC.movieDetailMakeCommentButton)
+        commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
+        return commentButton
+    }()
 
-    private let detailPopup = CustomPopupVC(title: "Rate The Product", buttonText: "Make Comment")
+    private lazy var detailPopup: CustomPopupVC = {
+        let detailPopup = CustomPopupVC(title: "Rate The Product", buttonText: "Make Comment")
+        return detailPopup
+    }()
 
     // MARK: - Life Cycle
     init(movie: MovieDetails) {
@@ -199,35 +221,103 @@ extension MovieDetailVC: MovieDetailVCProtocol {
         navigationController?.navigationBar.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailNavigationBar
     }
 
-    func configureSetupUIs() {
-        makeScrollView()
-        makeStackView()
-        makeDetailImageView()
-        makeDetailTagLineLabel()
-        makeAllHorizontalStackView()
-        makeAllHorizontalView()
-        makeDetailOverviewLabel()
-        makeButtonView()
-        makeHorizontalButtonStackView()
-        makeOfficialButton()
-        makeImdbButton()
-        makeFavButton()
-        makeAddToWatchListButton()
-        makeCommentButton()
-    }
-
     func configureAddSubViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         scrollView.addSubview(addToWatchListButton)
         scrollView.addSubview(commentButton)
         allHorizontalView.addSubview(allHorizontalStackView)
+        allHorizontalView.addSubview(horizontalStackView)
 
         view.addSubview(buttonView)
         buttonView.addSubview(horizontalButtonStackView)
         horizontalButtonStackView.addArrangedSubview(officialButton)
         horizontalButtonStackView.addArrangedSubview(imdbButton)
         horizontalButtonStackView.addArrangedSubview(favButton)
+    }
+
+    func configureSetupUIs() {
+        scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-100)
+        }
+
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(scrollView)
+            make.left.right.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
+
+        detailImageView.snp.makeConstraints { make in
+            make.height.equalTo(CGFloat.deviceHeight / 2.2)
+            make.width.equalTo(CGFloat.deviceWidth / 1.6)
+            make.top.equalToSuperview().offset(padding)
+        }
+
+        detailTagLineLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+
+        allHorizontalStackView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(padding)
+        }
+
+        allHorizontalView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview().inset(padding)
+        }
+
+        horizontalStackView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.centerX.equalTo(allHorizontalView.snp.centerX).offset(-5)
+        }
+
+        detailOverviewLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(40)
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
+        }
+
+        buttonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(100)
+        }
+
+        horizontalButtonStackView.snp.makeConstraints { make in
+            make.top.equalTo(buttonView.snp.top)
+            make.leading.trailing.equalToSuperview().inset(padding)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+
+        officialButton.snp.makeConstraints { make in
+            make.width.equalTo((CGFloat.deviceWidth - 40) / 3)
+            make.height.equalTo(50)
+        }
+
+        imdbButton.snp.makeConstraints { make in
+            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
+            make.height.equalTo(50)
+        }
+
+        favButton.snp.makeConstraints { make in
+            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
+            make.height.equalTo(50)
+        }
+
+        addToWatchListButton.snp.makeConstraints { make in
+            make.top.equalTo(detailImageView.snp.top)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().offset(-padding)
+            make.width.height.equalTo(50)
+        }
+
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(addToWatchListButton.snp.bottom).offset(padding)
+            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().offset(-padding)
+            make.width.height.equalTo(50)
+        }
     }
 
     func configureSetupDatas() {
@@ -240,124 +330,10 @@ extension MovieDetailVC: MovieDetailVCProtocol {
     }
 }
 
+// MARK: - Actions
 extension MovieDetailVC: PopupWindowDelegate {
     func didTapPopupButton() {
-        showToast(message: "Thanks for your comment.", seconds: 1.5, color: .systemGreen, style: .alert)
-    }
-
-    func makeScrollView() {
-        scrollView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
-        }
-    }
-
-    func makeStackView() {
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(scrollView)
-            make.left.right.equalTo(scrollView)
-            make.width.equalTo(scrollView)
-        }
-    }
-
-    func makeDetailImageView() {
-        detailImageView.snp.makeConstraints { make in
-            make.height.equalTo(CGFloat.deviceHeight / 2.2)
-            make.width.equalTo(CGFloat.deviceWidth / 1.6)
-            make.top.equalToSuperview().offset(padding)
-        }
-    }
-
-    func makeDetailTagLineLabel() {
-        detailTagLineLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(40)
-        }
-    }
-
-    func makeAllHorizontalStackView() {
-        allHorizontalStackView.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(padding)
-        }
-    }
-
-    func makeAllHorizontalView() {
-        allHorizontalView.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(padding * 2)
-        }
-    }
-
-    func makeDetailOverviewLabel() {
-        detailOverviewLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(40)
-            make.bottom.equalTo(scrollView.snp.bottom).offset(-50)
-        }
-    }
-
-    func makeButtonView() {
-        buttonView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(100)
-        }
-    }
-
-    func makeHorizontalButtonStackView() {
-        horizontalButtonStackView.snp.makeConstraints { make in
-            make.top.equalTo(buttonView.snp.top)
-            make.leading.trailing.equalToSuperview().inset(padding)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-        }
-    }
-
-    func makeOfficialButton() {
-        officialButton.addTarget(self, action: #selector(directToMovieUrl), for: .touchUpInside)
-
-        officialButton.snp.makeConstraints { make in
-            make.width.equalTo((CGFloat.deviceWidth - 40) / 3)
-            make.height.equalTo(50)
-        }
-    }
-
-    func makeImdbButton() {
-        imdbButton.addTarget(self, action: #selector(directToImdbUrl), for: .touchUpInside)
-
-        imdbButton.snp.makeConstraints { make in
-            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
-            make.height.equalTo(50)
-        }
-    }
-
-    func makeFavButton() {
-        favButton.addTarget(self, action: #selector(favButtonTapped), for: .touchUpInside)
-
-        favButton.snp.makeConstraints { make in
-            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
-            make.height.equalTo(50)
-        }
-    }
-
-    func makeAddToWatchListButton() {
-        addToWatchListButton.addTarget(self, action: #selector(addToWatchListButtonClicked), for: .touchUpInside)
-
-        addToWatchListButton.snp.makeConstraints { make in
-            make.top.equalTo(detailImageView.snp.top)
-            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
-            make.trailing.equalToSuperview().offset(-padding)
-            make.width.height.equalTo(50)
-        }
-    }
-
-    func makeCommentButton() {
-        commentButton.addTarget(self, action: #selector(commentButtonClicked), for: .touchUpInside)
-
-        commentButton.snp.makeConstraints { make in
-            make.top.equalTo(addToWatchListButton.snp.bottom).offset(padding)
-            make.leading.equalTo(detailImageView.snp.trailing).offset(padding)
-            make.trailing.equalToSuperview().offset(-padding)
-            make.width.height.equalTo(50)
-        }
+        showToastMessage(message: "Thanks for your comment.", seconds: 1.5, color: .systemGreen, style: .alert)
     }
 
     @objc func directToMovieUrl() {
@@ -373,23 +349,22 @@ extension MovieDetailVC: PopupWindowDelegate {
     @objc func favButtonTapped() {
         isHeartFilled.toggle()
         if isHeartFilled {
-            showToast(message: "Added to favorites", seconds: 1.5, color: .systemRed, style: .alert)
+            showToastMessage(message: "Added to favorites", seconds: 1.5, color: .systemRed, style: .alert)
             favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
 
         } else {
-            showToast(message: "Removed from favorites", seconds: 1.5, color: .systemRed, style: .alert)
+            showToastMessage(message: "Removed from favorites", seconds: 1.5, color: .systemRed, style: .alert)
             favButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
     }
 
     @objc func addToWatchListButtonClicked() {
         isWatchFilled.toggle()
-
         if isWatchFilled {
-            showToast(message: "Added to watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
+            showToastMessage(message: "Added to watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
             addToWatchListButton.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
         } else {
-            showToast(message: "Removed from watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
+            showToastMessage(message: "Removed from watchlist", seconds: 1.5, color: .systemOrange, style: .alert)
             addToWatchListButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
         }
     }
@@ -397,7 +372,7 @@ extension MovieDetailVC: PopupWindowDelegate {
     @objc func commentButtonClicked() {
         self.present(detailPopup, animated: true, completion: { [self] in
             detailPopup.view.superview?.isUserInteractionEnabled = true
-            detailPopup.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+            detailPopup.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissOnTapOutside)))
         })
     }
 

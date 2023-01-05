@@ -1,5 +1,5 @@
 //
-//  PopUpViewController.swift
+//  CustomPopup.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 7.12.2022.
@@ -8,52 +8,63 @@
 import UIKit
 import SnapKit
 
-private class CustomPopupView: UIView {
+private final class CustomPopupView: UIView {
 
-    let popupView = UIView()
-    let popupLabel = UILabel()
-    let popupTextView = UITextView()
-    let popupButton = UIButton()
+    let popupView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGray5
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.cornerRadius = 15
+        view.layer.masksToBounds = true
+        view.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupView
+        return view
+    }()
+
+    let popupLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.layer.masksToBounds = true
+        label.adjustsFontSizeToFitWidth = true
+        label.clipsToBounds = true
+        label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupLabel
+        return label
+    }()
+
+    let popupTextView: UITextView = {
+        let textView = UITextView(frame: .zero)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .white
+        textView.textAlignment = .left
+        textView.textColor = .black
+        textView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        textView.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupTextView
+        return textView
+    }()
+
+    lazy var popupButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemGreen
+        button.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupButton
+        return button
+    }()
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = .black.withAlphaComponent(0.4)
+        backgroundColor = .black.withAlphaComponent(0.3)
 
-        popupView.translatesAutoresizingMaskIntoConstraints = false
-        popupView.backgroundColor = .systemGray5
-        popupView.layer.borderWidth = 2
-        popupView.layer.borderColor = UIColor.white.cgColor
-        popupView.layer.cornerRadius = 15
-        popupView.layer.masksToBounds = true
-        popupView.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupView
-
-        popupLabel.translatesAutoresizingMaskIntoConstraints = false
-        popupLabel.textColor = .black
-        popupLabel.layer.masksToBounds = true
-        popupLabel.adjustsFontSizeToFitWidth = true
-        popupLabel.clipsToBounds = true
-        popupLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        popupLabel.numberOfLines = 1
-        popupLabel.textAlignment = .center
-        popupLabel.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupLabel
-
-        popupTextView.translatesAutoresizingMaskIntoConstraints = false
-        popupTextView.backgroundColor = .white
-        popupTextView.textAlignment = .left
-        popupTextView.textColor = .black
-        popupTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        popupTextView.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupTextView
-
-        popupButton.translatesAutoresizingMaskIntoConstraints = false
-        popupButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        popupButton.setTitleColor(.white, for: .normal)
-        popupButton.backgroundColor = .systemGreen
-        popupButton.accessibilityIdentifier = UIAccessibleIdentifiers.CustomPopupVC.popupWindowPopupButton
-
+        addSubview(popupView)
         popupView.addSubview(popupLabel)
         popupView.addSubview(popupTextView)
         popupView.addSubview(popupButton)
-        addSubview(popupView)
 
         popupView.snp.makeConstraints { make in
             make.width.equalTo(280)
@@ -86,14 +97,14 @@ private class CustomPopupView: UIView {
     }
 }
 
-protocol PopupWindowDelegate {
+protocol PopupWindowDelegate: AnyObject {
     func didTapPopupButton()
 }
 
-class CustomPopupVC: UIViewController {
+final class CustomPopupVC: UIViewController {
 
     private let popupView = CustomPopupView()
-    var delegate: PopupWindowDelegate?
+    weak var delegate: PopupWindowDelegate?
 
     init(title: String, buttonText: String) {
         super.init(nibName: nil, bundle: nil)
@@ -110,10 +121,9 @@ class CustomPopupVC: UIViewController {
 
     @objc func dismissView() {
         if popupView.popupTextView.text.isEmpty {
-            showToast(message: "TextView cannot be left blank!", seconds: 1.5, color: .red, style: .alert)
+            showToastMessage(message: "TextView cannot be left blank!", seconds: 1.5, color: .red, style: .alert)
         } else {
             self.dismiss(animated: true, completion: nil)
-            popupView.popupTextView.layer.borderWidth = 0
             popupView.popupTextView.text = ""
             delegate?.didTapPopupButton()
         }

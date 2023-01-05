@@ -15,7 +15,9 @@ struct Movies: Codable {
 // MARK: - Result
 struct Result: Codable {
     let id: Int?
-    let posterPath, releaseDate, title: String?
+    let posterPath: String?
+    let releaseDate: String?
+    let title: String?
     let voteAverage: Double?
 
     enum CodingKeys: String, CodingKey {

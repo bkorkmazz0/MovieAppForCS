@@ -25,7 +25,6 @@ final class MovieViewModel {
 extension MovieViewModel: MovieViewModelProtocol {
     func viewDidLoad() {
         view?.configureDesign()
-        view?.configureTableView()
         getMovies()
     }
 

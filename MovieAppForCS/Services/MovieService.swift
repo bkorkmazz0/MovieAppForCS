@@ -1,5 +1,5 @@
 //
-//  Service.swift
+//  MovieServiceService.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 28.11.2022.
@@ -12,7 +12,7 @@ protocol MovieServiceProtocol {
     func fetchAllMovies(page: Int, response: @escaping ([Result]?) -> ())
     func fetchAllMovieDetails(movieId: Int, response: @escaping (MovieDetails?) -> ())
 }
-
+#warning("//TODO: - Split service page to Movie and MovieDetail, and write service manager in Utilities folder.")
 final class MovieService: MovieServiceProtocol {
 
     // MARK: - fetchAllMovies

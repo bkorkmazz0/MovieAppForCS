@@ -11,10 +11,12 @@ import Foundation
 struct MovieDetails: Codable {
     let genres: [Genre]?
     let homepage: String?
-    let imdbID, overview: String?
+    let imdbID: String?
+    let overview: String?
     let posterPath: String?
     let releaseDate: String?
-    let tagline, title: String?
+    let tagline: String?
+    let title: String?
     let voteAverage: Double?
 
     enum CodingKeys: String, CodingKey {
@@ -24,7 +26,8 @@ struct MovieDetails: Codable {
         case overview
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-        case tagline, title
+        case tagline
+        case title
         case voteAverage = "vote_average"
     }
 
@@ -37,7 +40,11 @@ struct MovieDetails: Codable {
     }
 
     var _overview: String {
-        overview ?? "There is no overview!"
+        if overview == "" {
+            return "There is no overview!"
+        } else {
+            return overview ?? "N/A"
+        }
     }
 
     var _posterPath: String {
@@ -49,7 +56,11 @@ struct MovieDetails: Codable {
     }
 
     var _tagline: String {
-        tagline ?? "There is no tagline!"
+        if tagline == "" {
+            return "There is no tagline!"
+        } else {
+            return tagline ?? "N/A"
+        }
     }
 
     var _title: String {

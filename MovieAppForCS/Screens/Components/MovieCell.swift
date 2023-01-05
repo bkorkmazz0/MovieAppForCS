@@ -1,5 +1,5 @@
 //
-//  MovieTableViewCell.swift
+//  MovieCell.swift
 //  MovieAppForCS
 //
 //  Created by Berkan Korkmaz on 28.11.2022.
@@ -12,11 +12,13 @@ import Kingfisher
 final class MovieCell: UITableViewCell {
 
     // MARK: - Properties
-    static let movieTableViewCell = "tableViewCellIdentifier"
-    private let padding: CGFloat = 15
+    enum MovieCellConstant: String {
+        case movieTableViewCellIdentifier = "tableViewCellIdentifier"
+    }
+    private let padding = 15
 
     // MARK: - UI Elements
-    private lazy var containerView: UIView = {
+    private let containerView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 20
@@ -79,6 +81,7 @@ final class MovieCell: UITableViewCell {
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureDesign()
         configureAddSubViews()
         configureSetupUIs()
     }
@@ -88,6 +91,10 @@ final class MovieCell: UITableViewCell {
     }
 
     // MARK: - Functions
+    func configureDesign() {
+        selectionStyle = .none
+        accessoryType = .disclosureIndicator
+    }
 
     func configureAddSubViews() {
         addSubview(containerView)
@@ -99,71 +106,47 @@ final class MovieCell: UITableViewCell {
     }
 
     func configureSetupUIs() {
-        makeContainerView()
-        makeImageView()
-        makeTitleLabel()
-        makeStarImageView()
-        makeAverageVoteLabel()
-        makeReleaseDateLabel()
-    }
-
-    func configureSetupDatas(model: Result) {
-        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
-        cellTitleLabel.text = model._title
-        cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
-        cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "")
-    }
-}
-
-// MARK: - SnapKit
-extension MovieCell {
-
-    func makeContainerView() {
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(10)
             make.top.bottom.equalToSuperview().inset(5)
         }
-    }
 
-    func makeImageView() {
         cellImageView.snp.makeConstraints { make in
             make.width.equalTo(CGFloat.deviceWidth * 0.35)
             make.top.bottom.equalTo(contentView).inset(padding)
             make.leading.equalTo(padding - 5)
         }
-    }
 
-    func makeTitleLabel() {
         cellTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(cellImageView.snp.trailing).offset(padding)
             make.top.equalToSuperview().offset(padding)
             make.trailing.equalToSuperview().offset(-(padding * 2))
         }
-    }
 
-    func makeStarImageView() {
         cellStarImageView.snp.makeConstraints { make in
             make.width.equalTo(25)
             make.height.equalTo(23)
             make.leading.equalTo(cellImageView.snp.trailing).offset(padding)
             make.top.equalTo(cellTitleLabel.snp.bottom).offset(padding)
-
         }
-    }
 
-    func makeAverageVoteLabel() {
         cellAverageVoteLabel.snp.makeConstraints { make in
             make.leading.equalTo(cellStarImageView.snp.trailing).offset(2)
             make.top.equalTo(cellTitleLabel.snp.bottom).offset(padding)
         }
-    }
 
-    func makeReleaseDateLabel() {
         cellReleaseDateLabel.snp.makeConstraints { make in
             make.width.equalTo(60)
             make.height.equalTo(24)
             make.leading.equalTo(cellAverageVoteLabel.snp.trailing).offset(padding * 2)
             make.top.equalTo(cellTitleLabel.snp.bottom).offset(padding)
         }
+    }
+
+    func configureSetupDatas(model: Result) {
+        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        cellTitleLabel.text = model._title
+        cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
+        cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
     }
 }
