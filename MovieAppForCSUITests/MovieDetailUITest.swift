@@ -65,7 +65,7 @@ class MovieDetailUITest: XCTestCase {
         addToWatchlistButton.tap()
 
         XCTAssertTrue(addedToWatchlistAlertLocator.exists)
-        waitForElement(addedToWatchlistAlertLocator)
+
         addToWatchlistButton.tap()
 
         XCTAssertTrue(remowedFromWatchlistAlertLocator.exists)
@@ -88,7 +88,7 @@ class MovieDetailUITest: XCTestCase {
         favButton.tap()
 
         XCTAssertTrue(addedToFavoritesAlert.exists)
-        waitForElement(addedToFavoritesAlert)
+
         favButton.tap()
 
         XCTAssertTrue(remowedFromFavoritesAlert.exists)
@@ -114,6 +114,7 @@ class MovieDetailUITest: XCTestCase {
         
         let urlButton = safariWebPage.textFields["Address"]
         if urlButton.exists { urlButton.tap() }
+        
         let urlButtonText = urlButton.value as! String
         
         let verifyText = "https://www."

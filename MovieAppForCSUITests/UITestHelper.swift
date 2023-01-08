@@ -13,7 +13,7 @@ extension XCTestCase {
         XCUIApplication().navigationBars.buttons.element(boundBy: 0).tap()
     }
 
-    func waitForElement(_ element: XCUIElement, timeout: TimeInterval = 10.0) {
+    func waitForElement(_ element: XCUIElement, timeout: TimeInterval = 5.0) {
         let existsPredicate = NSPredicate(format: "exists == true")
 
         expectation(for: existsPredicate, evaluatedWith: element, handler: nil)

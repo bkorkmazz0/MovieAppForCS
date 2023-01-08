@@ -17,7 +17,8 @@ protocol MovieViewModelProtocol {
 
 final class MovieViewModel {
     weak var view: MovieVCProtocol?
-    private let service = MovieService()
+    private let movieService = MovieService()
+    private let movieDetailService = MovieDetailService()
     var movies: [Result] = []
     private var page: Int = 1
 }
@@ -29,7 +30,7 @@ extension MovieViewModel: MovieViewModelProtocol {
     }
 
     func getMovies() {
-        service.fetchAllMovies(page: page) { [weak self] returnedMovies in
+        movieService.fetchAllMovies(page: page) { [weak self] returnedMovies in
             guard let self = self else { return }
             guard let returnedMovies = returnedMovies else { return }
 
@@ -40,7 +41,7 @@ extension MovieViewModel: MovieViewModelProtocol {
     }
 
     func getDetail(movieId: Int) {
-        service.fetchAllMovieDetails(movieId: movieId) { [weak self] returnedDetail in
+        movieDetailService.fetchAllMovieDetails(movieId: movieId) { [weak self] returnedDetail in
             guard let self = self else { return }
             guard let returnedDetail = returnedDetail else { return }
 
