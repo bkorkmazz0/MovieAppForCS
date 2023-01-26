@@ -43,14 +43,18 @@ final class MovieVC: UIViewController {
         viewModel.view = self
         viewModel.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        tabBarShow(isHidden: false, animation: false, alpha: 1)
+    }
 }
 
 extension MovieVC: MovieVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.backButtonTitle = "Back"
-        title = "Popular Movies 🔥"
+        title = "Movies"
     }
 
     func reloadTableView() {

@@ -19,4 +19,15 @@ extension UIViewController {
             alert.dismiss(animated: true)
         }
     }
+
+    func tabBarShow(isHidden: Bool, animation: Bool, alpha: CGFloat) {
+        if animation == true {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.tabBarController?.tabBar.alpha = alpha
+            })
+        } else {
+            tabBarController?.tabBar.alpha = alpha
+        }
+        tabBarController?.tabBar.isHidden = isHidden
+    }
 }

@@ -208,6 +208,7 @@ final class MovieDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarShow(isHidden: true, animation: true, alpha: 0)
         viewModel.view = self
         viewModel.viewDidLoad()
         detailPopup.delegate = self
