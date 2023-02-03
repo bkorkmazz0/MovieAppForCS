@@ -15,7 +15,7 @@ enum TabElementIndex: Int {
 
 enum TabElementTitle: String {
     case search = "Search"
-    case home = "Home"
+    case home = "Popular"
     case profile = "Profile"
 }
 
@@ -27,7 +27,7 @@ enum TabElementImage {
     var image: UIImage {
         switch self {
         case .search: return UIImage(systemName: "magnifyingglass")!
-        case .home: return UIImage(systemName: "house")!
+        case .home: return UIImage(systemName: "flame")!
         case .profile: return UIImage(systemName: "person")!
         }
     }
@@ -40,6 +40,7 @@ class TabBar: UITabBarController {
         view.backgroundColor = .systemBackground
         UITabBar.appearance().barTintColor = .systemBackground
         tabBar.tintColor = .label
+        tabBar.layer.shadowColor = UIColor.systemGray5.cgColor
         setupVCs()
     }
 

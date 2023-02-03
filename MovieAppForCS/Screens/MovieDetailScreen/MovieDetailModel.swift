@@ -48,7 +48,7 @@ struct MovieDetails: Codable {
     }
 
     var _posterPath: String {
-        posterPath ?? "N/A"
+        posterPath ?? ""
     }
 
     var _releaseDate: String {

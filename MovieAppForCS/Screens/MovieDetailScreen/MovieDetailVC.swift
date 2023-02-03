@@ -218,6 +218,7 @@ final class MovieDetailVC: UIViewController {
 extension MovieDetailVC: MovieDetailVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = movie._title
         navigationController?.navigationBar.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailNavigationBar
     }

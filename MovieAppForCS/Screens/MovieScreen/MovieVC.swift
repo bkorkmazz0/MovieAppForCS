@@ -54,7 +54,7 @@ extension MovieVC: MovieVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonDisplayMode = .minimal
-        title = "Movies"
+        configureNavigationBar(largeTitleColor: .black, backgoundColor: .white, title: "Popular", preferredLargeTitle: false)
     }
 
     func reloadTableView() {
@@ -88,9 +88,9 @@ extension MovieVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat.deviceWidth * 0.58
+        CGFloat.deviceWidth * 0.55
     }
-
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

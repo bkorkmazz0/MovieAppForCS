@@ -149,4 +149,11 @@ final class MovieCell: UITableViewCell {
         cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
     }
+
+    func configureSetupDatas(model: Search) {
+        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        cellTitleLabel.text = model._title
+        cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
+        cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
+    }
 }

@@ -1,19 +1,19 @@
 //
-//  MovieModel.swift
+//  SearchModel.swift
 //  MovieAppForCS
 //
-//  Created by Berkan Korkmaz on 28.11.2022.
+//  Created by Berkan Korkmaz on 29.01.2023.
 //
 
 import Foundation
 
-// MARK: - Movies
-struct Movies: Codable {
-    let results: [Result]?
+//MARK: - Welcome
+struct SearchModel: Codable {
+    let results: [Search]?
 }
 
-// MARK: - Result
-struct Result: Codable {
+// MARK: - Search
+struct Search: Codable {
     let id: Int?
     let posterPath: String?
     let releaseDate: String?
@@ -32,8 +32,16 @@ struct Result: Codable {
         id ?? Int.min
     }
 
+//    var _posterPath: String {
+//        posterPath ?? ""
+//    }
+
     var _posterPath: String {
-        posterPath ?? ""
+        if posterPath != "" && posterPath != nil && posterPath != " "{
+            return posterPath!
+        } else {
+            return ServiceEndpoints.RANDOM_IMAGE.rawValue
+        }
     }
 
     var _title: String {

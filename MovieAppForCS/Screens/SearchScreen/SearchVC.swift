@@ -6,24 +6,140 @@
 //
 
 import UIKit
+import SnapKit
 
-class SearchVC: UIViewController {
+protocol SearchVCProtocol: AnyObject {
+    func configureDesign()
+    func reloadTableView()
+    func navigateToDetailScreen(movie: MovieDetails)
+}
+
+final class SearchVC: UIViewController {
+    private let viewModel = SearchViewModel()
+    private var searchText = ""
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.MovieCellConstant.movieTableViewCellIdentifier.rawValue)
+        tableView.separatorStyle = .none
+        #warning("//TODO right identifiers")
+        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.MovieVC.moviesTableView
+
+        view.addSubview(tableView)
+
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+        }
+        return tableView
+    }()
+
+    private lazy var searchBar: UISearchController = {
+        let searchBar = UISearchController(searchResultsController: nil)
+
+        navigationItem.searchController = searchBar
+        searchBar.searchResultsUpdater = self
+        searchBar.delegate = self
+        searchBar.searchBar.placeholder = "Find films..."
+        searchBar.searchBar.text = searchText
+        searchBar.searchBar.searchTextField.clearButtonMode = .always
+        searchBar.hidesNavigationBarDuringPresentation = false
+//        searchBar.obscuresBackgroundDuringPresentation = false
+        searchBar.searchBar.sizeToFit()
+        
+        searchBar.searchBar.searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+
+        return searchBar
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
-        // Do any additional setup after loading the view.
+        viewModel.view = self
+        viewModel.viewDidLoad()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        searchText = searchBar.searchBar.text ?? ""
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tabBarShow(isHidden: false, animation: false, alpha: 1)
+        searchBar.isActive = false
+        searchBar.searchBar.text = searchText
+    }
+}
+
+extension SearchVC: SearchVCProtocol {
+    func configureDesign() {
+        view.backgroundColor = .systemBackground
+        navigationItem.backButtonDisplayMode = .minimal
+        configureNavigationBar(largeTitleColor: .black, backgoundColor: .white, title: "Search", preferredLargeTitle: false)
+    }
+
+    func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+    func navigateToDetailScreen(movie: MovieDetails) {
+        DispatchQueue.main.async {
+            let detailScreen = MovieDetailVC(movie: movie)
+            self.navigationController?.pushViewController(detailScreen, animated: true)
+        }
+    }
+}
+
+extension SearchVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.searchMovies.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.MovieCellConstant.movieTableViewCellIdentifier.rawValue) as? MovieCell else { return UITableViewCell() }
+        cell.configureSetupDatas(model: viewModel.searchMovies[indexPath.row])
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.getDetail(movieId: viewModel.searchMovies[indexPath.row]._id)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat.deviceWidth * 0.55
+    }
+}
+
+extension SearchVC: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        let searchMovieName = searchText.replacingOccurrences(of: " ", with: "%20")
+        viewModel.getMovies(searchMovieName)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchText = searchBar.text ?? ""
+//        searchBar.text = ""
+        
+        // Perform any other actions you want when the cancel button is tapped.
+        // ...
+        
+//        searchBar.text = searchText
     }
-    */
+}
 
+extension SearchVC {
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if textField.text?.isEmpty == true {
+            viewModel.searchMovies.removeAll()
+            tableView.reloadData()
+        }
+    }
 }
