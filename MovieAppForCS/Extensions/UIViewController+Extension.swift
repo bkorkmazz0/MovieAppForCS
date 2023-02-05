@@ -37,7 +37,7 @@ extension UIViewController {
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: largeTitleColor]
         navBarAppearance.titleTextAttributes = [.foregroundColor: largeTitleColor]
         navBarAppearance.backgroundColor = backgoundColor
-        navBarAppearance.shadowColor = nil
+        navBarAppearance.shadowColor = .systemGray5
 
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.compactAppearance = navBarAppearance

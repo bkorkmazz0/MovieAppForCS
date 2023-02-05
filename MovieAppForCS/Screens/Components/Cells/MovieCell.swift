@@ -144,14 +144,22 @@ final class MovieCell: UITableViewCell {
     }
 
     func configureSetupDatas(model: Result) {
-        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        if model.posterPath != nil {
+            cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        } else {
+            cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.RANDOM_IMAGE.rawValue))
+        }
         cellTitleLabel.text = model._title
         cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
     }
 
     func configureSetupDatas(model: Search) {
-        cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        if model.posterPath != nil {
+            cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: model._posterPath)))
+        } else {
+            cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.RANDOM_IMAGE.rawValue))
+        }
         cellTitleLabel.text = model._title
         cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")

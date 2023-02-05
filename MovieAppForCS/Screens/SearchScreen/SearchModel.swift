@@ -32,16 +32,8 @@ struct Search: Codable {
         id ?? Int.min
     }
 
-//    var _posterPath: String {
-//        posterPath ?? ""
-//    }
-
     var _posterPath: String {
-        if posterPath != "" && posterPath != nil && posterPath != " "{
-            return posterPath!
-        } else {
-            return ServiceEndpoints.RANDOM_IMAGE.rawValue
-        }
+        posterPath ?? ""
     }
 
     var _title: String {

@@ -39,22 +39,22 @@ final class SearchVC: UIViewController {
         return tableView
     }()
 
-    private lazy var searchBar: UISearchController = {
-        let searchBar = UISearchController(searchResultsController: nil)
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
 
-        navigationItem.searchController = searchBar
-        searchBar.searchResultsUpdater = self
-        searchBar.delegate = self
-        searchBar.searchBar.placeholder = "Find films..."
-        searchBar.searchBar.text = searchText
-        searchBar.searchBar.searchTextField.clearButtonMode = .always
-        searchBar.hidesNavigationBarDuringPresentation = false
-//        searchBar.obscuresBackgroundDuringPresentation = false
-        searchBar.searchBar.sizeToFit()
-        
-        searchBar.searchBar.searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Find films..."
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.searchBarStyle = .prominent
 
-        return searchBar
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+
+        searchController.searchBar.searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+
+        return searchController
     }()
 
     override func viewDidLoad() {
@@ -65,14 +65,14 @@ final class SearchVC: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        searchText = searchBar.searchBar.text ?? ""
+        searchText = searchController.searchBar.text ?? ""
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarShow(isHidden: false, animation: false, alpha: 1)
-        searchBar.isActive = false
-        searchBar.searchBar.text = searchText
+        searchController.isActive = false
+        searchController.searchBar.text = searchText
     }
 }
 
@@ -80,7 +80,7 @@ extension SearchVC: SearchVCProtocol {
     func configureDesign() {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonDisplayMode = .minimal
-        configureNavigationBar(largeTitleColor: .black, backgoundColor: .white, title: "Search", preferredLargeTitle: false)
+        configureNavigationBar(largeTitleColor: .black, backgoundColor: .white, title: "Search", preferredLargeTitle: true)
     }
 
     func reloadTableView() {
@@ -117,21 +117,11 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension SearchVC: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
+extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
         let searchMovieName = searchText.replacingOccurrences(of: " ", with: "%20")
         viewModel.getMovies(searchMovieName)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchText = searchBar.text ?? ""
-//        searchBar.text = ""
-        
-        // Perform any other actions you want when the cancel button is tapped.
-        // ...
-        
-//        searchBar.text = searchText
     }
 }
 

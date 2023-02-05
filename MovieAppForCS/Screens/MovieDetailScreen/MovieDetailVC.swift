@@ -323,7 +323,12 @@ extension MovieDetailVC: MovieDetailVCProtocol {
     }
 
     func configureSetupDatas() {
-        detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: movie._posterPath)))
+        if movie.posterPath != nil {
+            detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: movie._posterPath)))
+        } else {
+            detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.RANDOM_IMAGE.rawValue))
+        }
+//        detailImageView.kf.setImage(with: URL(string: ServiceEndpoints.imageURL(posterPath: movie._posterPath)))
         detailTagLineLabel.text = movie._tagline.trimmingCharacters(in: .whitespaces)
         detailOverviewLabel.text = movie._overview.trimmingCharacters(in: .whitespaces)
         detailAverageVoteLabel.text = String(format: "%.1f", movie.voteAverage ?? 0.0)
