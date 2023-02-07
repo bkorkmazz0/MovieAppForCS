@@ -111,12 +111,12 @@ class MovieDetailUITest: XCTestCase {
 
         XCTAssertTrue(safariWebPage.exists)
         waitForElement(safariWebPage)
-        
+
         let urlButton = safariWebPage.textFields["Address"]
         if urlButton.exists { urlButton.tap() }
-        
+
         let urlButtonText = urlButton.value as! String
-        
+
         let verifyText = "https://www."
 
         XCTAssertTrue(urlButtonText.contains(verifyText))
