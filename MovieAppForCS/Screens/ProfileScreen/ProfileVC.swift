@@ -22,9 +22,9 @@ class ProfileVC: UIViewController {
         
         if !isLoggedIn {
             let vc = LoginVC()
-//            let nav = UINavigationController(rootViewController: vc)
-//            nav.modalPresentationStyle = .fullScreen
-//            present(nav, animated: false)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
         }
     }
 
