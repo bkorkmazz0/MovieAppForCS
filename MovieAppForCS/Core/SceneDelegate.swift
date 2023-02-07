@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         let tabBarController = TabBar()
         self.window?.rootViewController = tabBarController
-        tabBarController.selectedIndex = TabElementIndex.home.rawValue
+        tabBarController.selectedIndex = TabElementIndex.profile.rawValue
         window?.makeKeyAndVisible()
 
     }

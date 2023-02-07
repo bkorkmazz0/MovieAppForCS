@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D099818298FD5E900419671 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D099817298FD5E900419671 /* LoginVC.swift */; };
+		7D09981A298FD5F800419671 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D099819298FD5F800419671 /* RegisterVC.swift */; };
+		7D09981C298FDDA100419671 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D09981B298FDDA100419671 /* UIView+Extension.swift */; };
 		7D255D9829620C3A00A63F53 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D255D9729620C3A00A63F53 /* UIColor+Extension.swift */; };
 		7D255D99296220FC00A63F53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D7A2A6429354AFA00360F1D /* LaunchScreen.storyboard */; };
 		7D3478982940610900C37006 /* CustomPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3478972940610900C37006 /* CustomPopup.swift */; };
@@ -55,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7D099817298FD5E900419671 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		7D099819298FD5F800419671 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		7D09981B298FDDA100419671 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		7D255D9729620C3A00A63F53 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		7D3478972940610900C37006 /* CustomPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopup.swift; sourceTree = "<group>"; };
 		7D3E052A297FA43A005A1D1E /* NavigationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelper.swift; sourceTree = "<group>"; };
@@ -111,6 +117,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D099815298FD59500419671 /* LoginScreen */ = {
+			isa = PBXGroup;
+			children = (
+				7D099817298FD5E900419671 /* LoginVC.swift */,
+			);
+			path = LoginScreen;
+			sourceTree = "<group>";
+		};
+		7D099816298FD5AA00419671 /* RegisterScreen */ = {
+			isa = PBXGroup;
+			children = (
+				7D099819298FD5F800419671 /* RegisterVC.swift */,
+			);
+			path = RegisterScreen;
+			sourceTree = "<group>";
+		};
 		7D3E052C297FA620005A1D1E /* SearchScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				7D3E0530297FA6A8005A1D1E /* ProfileVC.swift */,
+				7D099815298FD59500419671 /* LoginScreen */,
+				7D099816298FD5AA00419671 /* RegisterScreen */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -164,6 +188,7 @@
 				7D50E56429430639009ECF75 /* UIViewController+Extension.swift */,
 				7D255D9729620C3A00A63F53 /* UIColor+Extension.swift */,
 				7D7EB113295A0AE300903D37 /* CGFloat+Extension.swift */,
+				7D09981B298FDDA100419671 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -390,8 +415,10 @@
 				7D7EB10F2959FB8D00903D37 /* MovieDetailViewModel.swift in Sources */,
 				7D7A2A5C29354AF900360F1D /* SceneDelegate.swift in Sources */,
 				7D7A2AA82935513D00360F1D /* MovieViewModel.swift in Sources */,
+				7D099818298FD5E900419671 /* LoginVC.swift in Sources */,
 				7D3E0531297FA6A8005A1D1E /* ProfileVC.swift in Sources */,
 				7D7A2AA2293550D100360F1D /* MovieService.swift in Sources */,
+				7D09981C298FDDA100419671 /* UIView+Extension.swift in Sources */,
 				7D3E052F297FA671005A1D1E /* SearchVC.swift in Sources */,
 				7D3E052B297FA43A005A1D1E /* NavigationHelper.swift in Sources */,
 				7D3478982940610900C37006 /* CustomPopup.swift in Sources */,
@@ -405,6 +432,7 @@
 				7D3E054029868B61005A1D1E /* SearchService.swift in Sources */,
 				7D7A2AB3293552E300360F1D /* MovieCell.swift in Sources */,
 				7D7A2AA6293550F900360F1D /* MovieDetailModel.swift in Sources */,
+				7D09981A298FD5F800419671 /* RegisterVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
