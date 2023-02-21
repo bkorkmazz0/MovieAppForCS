@@ -50,7 +50,7 @@ final class MovieDetailVC: UIViewController {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemBackground
-        view.layer.shadowColor = UIColor.systemGray4.cgColor
+        view.layer.shadowColor = UIColor.systemGray5.cgColor
         view.layer.shadowOpacity = 0.4
         view.accessibilityIdentifier = UIAccessibleIdentifiers.MovieDetailVC.movieDetailButtonView
         return view
@@ -208,7 +208,7 @@ final class MovieDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarShow(isHidden: true, animation: true, alpha: 0)
+        tabBarShow(isHidden: true, animation: false, alpha: 0)
         viewModel.view = self
         viewModel.viewDidLoad()
         detailPopup.delegate = self

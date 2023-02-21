@@ -69,7 +69,7 @@ final class MovieCell: UITableViewCell {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
-        label.backgroundColor = .systemGray4.withAlphaComponent(0.4)
+        label.backgroundColor = .systemGray5.withAlphaComponent(0.4)
         label.layer.cornerRadius = 8
         label.layer.borderWidth = 0.4
         label.textAlignment = .center

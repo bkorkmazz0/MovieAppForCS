@@ -52,9 +52,10 @@ final class MovieVC: UIViewController {
 
 extension MovieVC: MovieVCProtocol {
     func configureDesign() {
+        title = "Popular"
         view.backgroundColor = .systemBackground
         navigationItem.backButtonDisplayMode = .minimal
-        configureNavigationBar(largeTitleColor: .black, backgoundColor: .white, title: "Popular", preferredLargeTitle: true)
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     func reloadTableView() {

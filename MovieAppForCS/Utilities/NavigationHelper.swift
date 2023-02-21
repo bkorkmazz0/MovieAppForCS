@@ -10,25 +10,25 @@ import UIKit
 enum TabElementIndex: Int {
     case search = 0
     case home = 1
-    case profile = 2
+    case account = 2
 }
 
 enum TabElementTitle: String {
     case search = "Search"
     case home = "Popular"
-    case profile = "Profile"
+    case account = "Account"
 }
 
 enum TabElementImage {
     case search
     case home
-    case profile
+    case account
 
     var image: UIImage {
         switch self {
         case .search: return UIImage(systemName: "magnifyingglass")!
         case .home: return UIImage(systemName: "flame")!
-        case .profile: return UIImage(systemName: "person")!
+        case .account: return UIImage(systemName: "person")!
         }
     }
 }
@@ -40,18 +40,17 @@ class TabBar: UITabBarController {
         view.backgroundColor = .systemBackground
         UITabBar.appearance().barTintColor = .systemBackground
         tabBar.tintColor = .label
-        tabBar.layer.shadowColor = UIColor.systemGray5.cgColor
         setupVCs()
     }
 
-    fileprivate func createNavController(for rootViewController: UIViewController,
+    private func createNavController(for rootViewController: UIViewController,
         title: String,
         image: UIImage) -> UIViewController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
-        navController.navigationBar.prefersLargeTitles = false
-        rootViewController.navigationItem.title = title
+        navController.navigationItem.largeTitleDisplayMode = .always
+        navController.navigationBar.prefersLargeTitles = true
         return navController
     }
 
@@ -59,7 +58,7 @@ class TabBar: UITabBarController {
         viewControllers = [
             createNavController(for: SearchVC(), title: NSLocalizedString(TabElementTitle.search.rawValue, comment: ""), image: TabElementImage.search.image),
             createNavController(for: MovieVC(), title: NSLocalizedString(TabElementTitle.home.rawValue, comment: ""), image: TabElementImage.home.image),
-            createNavController(for: ProfileVC(), title: NSLocalizedString(TabElementTitle.profile.rawValue, comment: ""), image: TabElementImage.profile.image)
+            createNavController(for: AccountVC(), title: NSLocalizedString(TabElementTitle.account.rawValue, comment: ""), image: TabElementImage.account.image)
         ]
     }
 }
