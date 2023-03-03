@@ -127,7 +127,7 @@ extension SignInVC {
         }
 
         createAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(signInButton.snp.bottom).offset(30)
+            make.top.equalTo(signInButton.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(30)
             make.height.equalTo(50)
         }
@@ -153,15 +153,15 @@ extension SignInVC {
             DispatchQueue.main.async {
                 if success {
                     let vc = TabBar()
-                    vc.modalPresentationStyle = .fullScreen
-                    self.dismiss(animated: true, completion: nil)
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(vc)
+                    vc.selectedIndex = TabElementIndex.account.rawValue
                 } else {
                     print("Error sign in user")
                 }
             }
         }
     }
-
+    
     @objc func didTapCreateAccountButton() {
         let vc = SignUpVC()
         let navVC = UINavigationController(rootViewController: vc)

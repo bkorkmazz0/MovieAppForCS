@@ -17,23 +17,27 @@ enum TabElementTitle: String {
     case search = "Search"
     case home = "Popular"
     case account = "Account"
+    case profile = "Profile"
 }
 
 enum TabElementImage {
     case search
     case home
     case account
+    case profile
 
     var image: UIImage {
         switch self {
         case .search: return UIImage(systemName: "magnifyingglass")!
         case .home: return UIImage(systemName: "flame")!
         case .account: return UIImage(systemName: "person")!
+        case .profile: return UIImage(systemName: "person.fill")!
         }
     }
 }
 
 class TabBar: UITabBarController {
+    private let isSigendIn = AuthManager.shared.isSignedIn
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +62,8 @@ class TabBar: UITabBarController {
         viewControllers = [
             createNavController(for: SearchVC(), title: NSLocalizedString(TabElementTitle.search.rawValue, comment: ""), image: TabElementImage.search.image),
             createNavController(for: MovieVC(), title: NSLocalizedString(TabElementTitle.home.rawValue, comment: ""), image: TabElementImage.home.image),
-            createNavController(for: AccountVC(), title: NSLocalizedString(TabElementTitle.account.rawValue, comment: ""), image: TabElementImage.account.image)
+
+            createNavController(for: isSigendIn ? ProfileVC() : AccountVC(), title: isSigendIn ? NSLocalizedString(TabElementTitle.profile.rawValue, comment: "") : NSLocalizedString(TabElementTitle.account.rawValue, comment: ""), image: isSigendIn ? TabElementImage.profile.image : TabElementImage.account.image)
         ]
     }
 }

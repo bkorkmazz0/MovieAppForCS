@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class SignHeaderView: UIView {
+final class SignHeaderView: UIView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false

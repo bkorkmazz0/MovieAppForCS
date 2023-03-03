@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SnapKit
 import FirebaseAuth
 
 class ProfileVC: UIViewController {
-    
+
 //    private let imageView: UIImageView = {
 //        let imageView = UIImageView()
 //        imageView.image = UIImage(systemName: "person.circle")
@@ -20,21 +21,21 @@ class ProfileVC: UIViewController {
 //        imageView.layer.borderColor = UIColor.lightGray.cgColor
 //        return imageView
 //    }()
-    
+
     //viewdidload
-    
+
 //    imageView.frame = CGRect(x: (scrollView.width - size) / 2, y: 20, width: size, height: size)
     //        imageView.layer.cornerRadius = imageView.width / 2.0
-    
+
     //        scrollView.isUserInteractionEnabled = true
     //        imageView.isUserInteractionEnabled = true
     //        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapChangeProfilePic))
     //        imageView.addGestureRecognizer(gesture)
-    
+
     //    @objc private func didTapChangeProfilePic() {
     //        presentPhotoActionSheet()
     //    }
-    
+
 //    extension SignUpVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 //
 //        func presentPhotoActionSheet() {
@@ -77,76 +78,38 @@ class ProfileVC: UIViewController {
 //        }
 //    }
 
-    
-    
-    
-    
-    
-    
-    
-
-    private let logoutButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Log Out", for: .normal)
-        button.backgroundColor = .link
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        return button
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
-        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        title = "Profile"
+        view.backgroundColor = .systemBackground
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.prefersLargeTitles = true
 
-        view.addSubview(logoutButton)
+        setUpSignOutButton()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        logoutButton.frame = CGRect(x: CGFloat.deviceWidth / 2, y: CGFloat.deviceHeight / 2, width: 102, height: 52)
-
+    private func setUpSignOutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(didTapSignOut))
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        validateAuth()
-    }
-
-    @objc private func logoutButtonTapped() {
-
-        let actionSheet = UIAlertController(title: "", message: "Do you want to logout?", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
-
-            guard let self = self else {
-                return
-            }
-            
-            do {
-                try FirebaseAuth.Auth.auth().signOut()
-
-                let vc = SignInVC()
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
-            } catch let signOutError as NSError {
-                print ("Error signing out: %@", signOutError)
+    @objc private func didTapSignOut() {
+        let actionSheet = UIAlertController(title: "Sign Out", message: "Are you sure you would like to sign out?", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
+            AuthManager.shared.signOut { [weak self] success in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if success {
+                        let vc = TabBar()
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(vc)
+                        vc.selectedIndex = TabElementIndex.account.rawValue
+//                        self.navigationController?.popToRootViewController(animated: true)
+                    } else {
+                        print("Error sign out user")
+                    }
+                }
             }
         }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
         present(actionSheet, animated: true)
-    }
-
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let vc = SignInVC()
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: true)
-        }
     }
 }

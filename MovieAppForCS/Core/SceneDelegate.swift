@@ -16,25 +16,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-//        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-//        window?.windowScene = windowScene
-//        let tabBarController = TabBar()
-//        tabBarController.selectedIndex = TabElementIndex.account.rawValue
+        let tabBarController = TabBar()
+        tabBarController.selectedIndex = TabElementIndex.account.rawValue
+        
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+    }
 
-//        self.window?.rootViewController = tabBarController
-//        window?.makeKeyAndVisible()
-
-        let window = UIWindow(windowScene: windowScene)
-
-        let vc: UIViewController
-        if AuthManager.shared.isSignedIn {
-            vc = TabBar()
-        } else {
-            vc = UINavigationController(rootViewController: SignInVC())
-        }
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else { return }
         window.rootViewController = vc
-        window.makeKeyAndVisible()
-        self.window = window
+        UIView.transition(with: window, duration: 0.5, options: [.transitionFlipFromLeft], animations: nil, completion: nil)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

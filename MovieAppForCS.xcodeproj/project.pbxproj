@@ -42,6 +42,7 @@
 		7D7A2AB3293552E300360F1D /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A2AB2293552E300360F1D /* MovieCell.swift */; };
 		7D7EB10F2959FB8D00903D37 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7EB10E2959FB8D00903D37 /* MovieDetailViewModel.swift */; };
 		7D7EB114295A0AE300903D37 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7EB113295A0AE300903D37 /* CGFloat+Extension.swift */; };
+		7D9C34F929B21EE600FD8AB6 /* CustomPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9C34F829B21EE500FD8AB6 /* CustomPopupView.swift */; };
 		7DA05DA929695B92002D2684 /* UITestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA05DA829695B92002D2684 /* UITestHelper.swift */; };
 		7DCCE41929936BAF00C72078 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DCCE41829936BAF00C72078 /* GoogleService-Info.plist */; };
 		7DCCE4292998318E00C72078 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCCE4282998318E00C72078 /* AccountVC.swift */; };
@@ -105,6 +106,7 @@
 		7D7A2AB2293552E300360F1D /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		7D7EB10E2959FB8D00903D37 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		7D7EB113295A0AE300903D37 /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
+		7D9C34F829B21EE500FD8AB6 /* CustomPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopupView.swift; sourceTree = "<group>"; };
 		7DA05DA829695B92002D2684 /* UITestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHelper.swift; sourceTree = "<group>"; };
 		7DCCE41829936BAF00C72078 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DCCE4282998318E00C72078 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
@@ -160,7 +162,6 @@
 				7D099817298FD5E900419671 /* SignInVC.swift */,
 				7D099819298FD5F800419671 /* SignUpVC.swift */,
 				7D3E0530297FA6A8005A1D1E /* ProfileVC.swift */,
-				7DE29846299D2B4E008495F4 /* SignHeaderView.swift */,
 			);
 			path = AccountScreen;
 			sourceTree = "<group>";
@@ -316,8 +317,18 @@
 			children = (
 				7D3E05352980F2B0005A1D1E /* Customs */,
 				7D3E05342980F2A4005A1D1E /* Cells */,
+				7D9C34F629A6586C00FD8AB6 /* Views */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		7D9C34F629A6586C00FD8AB6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7D9C34F829B21EE500FD8AB6 /* CustomPopupView.swift */,
+				7DE29846299D2B4E008495F4 /* SignHeaderView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7DE29841299CC4DA008495F4 /* Managers */ = {
@@ -476,6 +487,7 @@
 				7D3E053C2986838B005A1D1E /* SearchModel.swift in Sources */,
 				7D7A2AAF2935526D00360F1D /* MovieDetailVC.swift in Sources */,
 				7D255D9829620C3A00A63F53 /* UIColor+Extension.swift in Sources */,
+				7D9C34F929B21EE600FD8AB6 /* CustomPopupView.swift in Sources */,
 				7D3E054029868B61005A1D1E /* SearchService.swift in Sources */,
 				7DCCE4292998318E00C72078 /* AccountVC.swift in Sources */,
 				7D7A2AB3293552E300360F1D /* MovieCell.swift in Sources */,
