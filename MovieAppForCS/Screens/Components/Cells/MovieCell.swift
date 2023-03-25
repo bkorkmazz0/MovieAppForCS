@@ -150,7 +150,7 @@ final class MovieCell: UITableViewCell {
             cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.RANDOM_IMAGE.rawValue))
         }
         cellTitleLabel.text = model._title
-        cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
+        cellAverageVoteLabel.text = String(format: "%.1f", model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
     }
 
@@ -161,7 +161,7 @@ final class MovieCell: UITableViewCell {
             cellImageView.kf.setImage(with: URL(string: ServiceEndpoints.RANDOM_IMAGE.rawValue))
         }
         cellTitleLabel.text = model._title
-        cellAverageVoteLabel.text = String(describing: model.voteAverage ?? 0.0)
+        cellAverageVoteLabel.text = String(format: "%.1f", model.voteAverage ?? 0.0)
         cellReleaseDateLabel.text = String((model._releaseDate.split(separator: "-").first) ?? "N/A")
     }
 }
