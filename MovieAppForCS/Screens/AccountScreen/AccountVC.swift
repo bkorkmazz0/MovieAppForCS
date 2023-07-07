@@ -15,6 +15,7 @@ class AccountVC: UIViewController {
     
     private let imageView = UIImageView(image: UIImage.gifImageWithName("johnny"))
 
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,6 +27,9 @@ class AccountVC: UIViewController {
         tableView.layer.borderWidth = 1
         tableView.layer.borderColor = UIColor.lightGray.cgColor
         tableView.layer.masksToBounds = true
+        
+        tableView.accessibilityIdentifier = UIAccessibleIdentifiers.AccountVC.accountTableView
+
         return tableView
     }()
 
@@ -35,7 +39,9 @@ class AccountVC: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonDisplayMode = .minimal
         navigationController?.navigationBar.prefersLargeTitles = true
-
+        
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.AccountVC.accountImageView
+        
         view.addSubview(imageView)
         view.addSubview(tableView)
 
@@ -65,6 +71,7 @@ extension AccountVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell.AccountCellConstant.accountCellIdentifier.rawValue) as? AccountCell else { return UITableViewCell() }
+        #warning("account cell movie cell rearrangment")
         cell.textLabel?.text = viewControllersTitles[indexPath.row]
         return cell
     }

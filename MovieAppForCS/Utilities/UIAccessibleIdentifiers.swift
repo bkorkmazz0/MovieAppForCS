@@ -9,6 +9,40 @@ import Foundation
 
 struct UIAccessibleIdentifiers {
 
+    
+    // MARK: - AccountVC
+    struct AccountVC {
+        static let accountImageView = "account-image-view"
+        static let accountTableView = "account-table-view"
+    }
+    
+    // MARK: - AccountCell
+    struct AccountCell {
+        static let accountCellTitleLabel = "account-cell-title-label"
+    }
+    
+    // MARK: - SignHeaderView
+    struct SignHeaderView {
+        static let signHeaderViewImageView = "signHeaderView-image-view"
+        static let signHeaderViewLabel = "signHeaderView-label"
+    }
+    
+    // MARK: - SignInVC
+    struct SignInVC {
+        static let signInEmailField = "signIn-email-field"
+        static let signInPasswordField = "signIn-password-field"
+        static let signInSignInButton = "signIn-signIn-button"
+        static let signInCreateAccountButton = "signIn-create-account-button"
+    }
+    
+    // MARK: - SignUpVC
+    struct SignUpVC {
+        static let signUpFullNameField = "signUp-full-name-field"
+        static let signUpEmailField = "signUp-email-field"
+        static let signUpPasswordField = "signUp-password-field"
+        static let signUpSignUpButton = "signUp-signUp-button"
+    }
+    
     // MARK: - MovieVC
     struct MovieVC {
         static let moviesTableView = "movies-table-view"
@@ -60,4 +94,6 @@ struct UIAccessibleIdentifiers {
         static let popupBlankMessageAlert = "TextView cannot be left blank!"
         static let popupThanksMessageAlert = "Thanks for your comment."
     }
+    
+    
 }

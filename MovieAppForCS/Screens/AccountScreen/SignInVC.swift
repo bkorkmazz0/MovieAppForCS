@@ -28,8 +28,10 @@ class SignInVC: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 50))
         field.leftViewMode = .always
         field.backgroundColor = .white
-
         field.text = "berkan@gmail.com"
+        
+        field.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInEmailField
+        
         return field
     }()
 
@@ -47,8 +49,10 @@ class SignInVC: UIViewController {
         field.leftViewMode = .always
         field.isSecureTextEntry = true
         field.backgroundColor = .white
-
         field.text = "password"
+        
+        field.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInPasswordField
+        
         return field
     }()
 
@@ -60,6 +64,9 @@ class SignInVC: UIViewController {
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+                
+        button.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInSignInButton
+
         return button
     }()
 
@@ -68,6 +75,9 @@ class SignInVC: UIViewController {
         button.setTitle("Create Account", for: .normal)
         button.setTitleColor(.link, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12, weight: .regular)
+        
+        button.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInCreateAccountButton
+
         return button
     }()
 

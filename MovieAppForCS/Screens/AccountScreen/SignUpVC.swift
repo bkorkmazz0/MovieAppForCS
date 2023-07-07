@@ -26,6 +26,9 @@ class SignUpVC: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
+        
+        field.accessibilityIdentifier = UIAccessibleIdentifiers.SignUpVC.signUpFullNameField
+        
         return field
     }()
 
@@ -43,8 +46,10 @@ class SignUpVC: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
-
         field.text = "berkan@gmail.com"
+        
+        field.accessibilityIdentifier = UIAccessibleIdentifiers.SignUpVC.signUpEmailField
+
         return field
     }()
 
@@ -62,8 +67,10 @@ class SignUpVC: UIViewController {
         field.leftViewMode = .always
         field.backgroundColor = .white
         field.isSecureTextEntry = true
-
         field.text = "password"
+        
+        field.accessibilityIdentifier = UIAccessibleIdentifiers.SignUpVC.signUpPasswordField
+
         return field
     }()
 
@@ -75,6 +82,9 @@ class SignUpVC: UIViewController {
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        button.accessibilityIdentifier = UIAccessibleIdentifiers.SignUpVC.signUpSignUpButton
+
         return button
     }()
 

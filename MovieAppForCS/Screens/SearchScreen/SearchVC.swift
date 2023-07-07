@@ -48,7 +48,7 @@ final class SearchVC: UIViewController {
         searchController.searchBar.placeholder = "Find films..."
         searchController.searchBar.sizeToFit()
         searchController.searchBar.searchBarStyle = .prominent
-
+        
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
 

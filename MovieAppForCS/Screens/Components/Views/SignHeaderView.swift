@@ -15,6 +15,9 @@ final class SignHeaderView: UIView {
         imageView.image = UIImage(named: "Logo")
         imageView.backgroundColor = .systemBackground
         imageView.contentMode = .scaleAspectFit
+        
+        imageView.accessibilityIdentifier = UIAccessibleIdentifiers.SignHeaderView.signHeaderViewImageView
+        
         return imageView
     }()
 
@@ -25,6 +28,9 @@ final class SignHeaderView: UIView {
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.text = "Explore millions of films!"
+        
+        label.accessibilityIdentifier = UIAccessibleIdentifiers.SignHeaderView.signHeaderViewLabel
+
         return label
     }()
 

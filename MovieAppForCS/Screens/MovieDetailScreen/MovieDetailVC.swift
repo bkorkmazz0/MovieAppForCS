@@ -293,7 +293,7 @@ extension MovieDetailVC: MovieDetailVCProtocol {
         }
 
         officialButton.snp.makeConstraints { make in
-            make.width.equalTo((CGFloat.deviceWidth - 40) / 3)
+            make.width.equalTo(((CGFloat.deviceWidth - 40) / 3))
             make.height.equalTo(50)
         }
 
