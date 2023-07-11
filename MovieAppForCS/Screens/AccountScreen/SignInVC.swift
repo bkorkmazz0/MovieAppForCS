@@ -28,7 +28,7 @@ class SignInVC: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 50))
         field.leftViewMode = .always
         field.backgroundColor = .white
-        field.text = "berkan@gmail.com"
+//        field.text = "berkan@gmail.com"
         
         field.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInEmailField
         
@@ -49,7 +49,7 @@ class SignInVC: UIViewController {
         field.leftViewMode = .always
         field.isSecureTextEntry = true
         field.backgroundColor = .white
-        field.text = "password"
+//        field.text = "password"
         
         field.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInPasswordField
         
@@ -152,12 +152,12 @@ extension SignInVC {
     @objc func didTapSignInButton() {
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
-
+        
         guard let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6 else {
             alertUserSignInError()
             return
         }
-
+        
         AuthManager.shared.signIn(email: email, password: password) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {

@@ -9,9 +9,14 @@ import Foundation
 
 struct UIAccessibleIdentifiers {
 
+    // MARK: - TabBar
+    struct TabBar {
+        static let tabBar = "tabBar"
+    }
     
     // MARK: - AccountVC
     struct AccountVC {
+        static let accountNavigationBarTitle = "Account"
         static let accountImageView = "account-image-view"
         static let accountTableView = "account-table-view"
     }
@@ -46,7 +51,7 @@ struct UIAccessibleIdentifiers {
     // MARK: - MovieVC
     struct MovieVC {
         static let moviesTableView = "movies-table-view"
-        static let moviesNavigationBarTitle = "Popular Movies 🔥"
+        static let moviesNavigationBarTitle = "Popular"
     }
 
     // MARK: - MovieCell
@@ -94,6 +99,4 @@ struct UIAccessibleIdentifiers {
         static let popupBlankMessageAlert = "TextView cannot be left blank!"
         static let popupThanksMessageAlert = "Thanks for your comment."
     }
-    
-    
 }

@@ -44,6 +44,7 @@ class TabBar: UITabBarController {
         view.backgroundColor = .systemBackground
         UITabBar.appearance().barTintColor = .systemBackground
         tabBar.tintColor = .label
+        tabBar.accessibilityIdentifier = UIAccessibleIdentifiers.TabBar.tabBar
         setupVCs()
     }
 
