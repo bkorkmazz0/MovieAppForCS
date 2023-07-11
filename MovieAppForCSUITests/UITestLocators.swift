@@ -8,7 +8,47 @@
 import XCTest
 
 struct UITestLocators {
+    
+    // MARK: - TabBarLocators
+    struct TabBarLocators {
+        static let tabBarLocator = XCUIApplication().tabBars[UIAccessibleIdentifiers.TabBar.tabBar]
+    }
 
+    // MARK: - AccountVCLocators
+    struct AccountVCLocators {
+        static let accountNavigationBarTitleLocator = XCUIApplication().navigationBars.staticTexts[UIAccessibleIdentifiers.AccountVC.accountNavigationBarTitle]
+        static let accountImageViewLocator = XCUIApplication().images[UIAccessibleIdentifiers.AccountVC.accountImageView]
+        static let accountTableViewLocator = XCUIApplication().tables[UIAccessibleIdentifiers.AccountVC.accountTableView]
+        static let accountTableViewCellLocator = XCUIApplication().tables[UIAccessibleIdentifiers.AccountVC.accountTableView].cells
+    }
+    
+    // MARK: - AccountCellLocators
+    struct AccountCellLocators {
+        static let accountCellTitleLabelLocator = "account-cell-title-label"
+    }
+    
+    // MARK: - SignHeaderViewLocators
+    struct SignHeaderViewLocators {
+        static let signHeaderViewImageViewLocator = "signHeaderView-image-view"
+        static let signHeaderViewLabelLocator = "signHeaderView-label"
+    }
+    
+    // MARK: - SignInVCLocators
+    struct SignInVCLocators {
+        static let signInEmailFieldLocator = "signIn-email-field"
+        static let signInPasswordFieldLocator = "signIn-password-field"
+        static let signInSignInButtonLocator = "signIn-signIn-button"
+        static let signInCreateAccountButtonLocator = "signIn-create-account-button"
+    }
+    
+    // MARK: - SignUpVCLocators
+    struct SignUpVCLocators {
+        static let signUpFullNameFieldLocator = "signUp-full-name-field"
+        static let signUpEmailFieldLocator = "signUp-email-field"
+        static let signUpPasswordFieldLocator = "signUp-password-field"
+        static let signUpSignUpButtonLocator = "signUp-signUp-button"
+    }
+    
     // MARK: - MovieVCLocators
     struct MovieVCLocators {
         static let moviesTableViewLocator = XCUIApplication().tables[UIAccessibleIdentifiers.MovieVC.moviesTableView]

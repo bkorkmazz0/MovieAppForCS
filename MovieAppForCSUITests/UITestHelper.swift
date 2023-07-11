@@ -44,5 +44,53 @@ extension XCTestCase {
             count += 1
         }
     }
+    
+    func clickTabBar(_ tabBarIndex: Int) {
+        let tabBar = XCUIApplication().tabBars.element
+        
+        let tabBarItem = tabBar.buttons.element(boundBy: tabBarIndex)
+        tabBarItem.tap()
+    }
+    
+    func isTabSelected(_ selectedIndex: Int) -> Bool {
+        let tabBar = XCUIApplication().tabBars.element
+        
+        let TabBarItem = tabBar.buttons.element(boundBy: selectedIndex)
+        return TabBarItem.isSelected
+    }
+    
+    func isSearchBarKeyboardOpen(searchBar: XCUIElement) -> Bool {
+        searchBar.tap()
+        
+        return XCUIApplication().keyboards.count > 0
+    }
+    
+    func isLogin() -> Bool {
+        clickTabBar(2)
+        if UITestLocators.AccountVCLocators.accountImageViewLocator.exists {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func toLogout() {
+        
+        if isLogin() {
+            let signOutButton = XCUIApplication().navigationBars["Profile"].buttons["Sign Out"]
+            let signOutButtonOptions = XCUIApplication().scrollViews.otherElements
+            
+            signOutButton.tap()
+            signOutButtonOptions.buttons["Cancel"].tap()
+            XCTAssertTrue(XCUIApplication().buttons["Sign Out"].exists)
+            
+            signOutButton.tap()
+            signOutButtonOptions.buttons["Sign Out"].tap()
+            
+            waitForElement(UITestLocators.AccountVCLocators.accountImageViewLocator)
+            XCTAssertTrue(UITestLocators.AccountVCLocators.accountNavigationBarTitleLocator.exists)
 
+        }
+    }
+    
 }

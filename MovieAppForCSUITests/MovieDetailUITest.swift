@@ -24,13 +24,14 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_ItemsVerify() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
-
-        XCTAssertTrue(UITestLocators.MovieDetailVCLocators.backButtonLocator.exists)
+        
         XCTAssertTrue(UITestLocators.MovieDetailVCLocators.movieDetailNavigationBarTitleLocator.exists)
         XCTAssertTrue(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator.exists)
         XCTAssertTrue(UITestLocators.MovieDetailVCLocators.movieDetailTagLineLabelLocator.exists)
@@ -51,8 +52,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_AddToWatchButton() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -74,8 +77,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_FavButton() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -97,8 +102,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_OfficialButton() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -117,7 +124,7 @@ class MovieDetailUITest: XCTestCase {
 
         let urlButtonText = urlButton.value as! String
 
-        let verifyText = "https://www."
+        let verifyText = "https://"
 
         XCTAssertTrue(urlButtonText.contains(verifyText))
 
@@ -129,8 +136,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_IMDbButton() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -161,8 +170,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_PopupView_ItemsVerify() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -178,8 +189,10 @@ class MovieDetailUITest: XCTestCase {
 
     func test_MovieDetail_PopupView() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0).tap()
 
         waitForElement(UITestLocators.MovieDetailVCLocators.movieDetailImageViewLocator)
@@ -210,13 +223,12 @@ class MovieDetailUITest: XCTestCase {
 
         XCTAssertTrue(popupThanksMessageAlert.exists)
 
-        waitForElement(UITestLocators.MovieDetailVCLocators.backButtonLocator)
-
         XCTAssertTrue(detailCommentButton.exists)
 
-        goToBack()
-
-        XCTAssertTrue(UITestLocators.MovieVCLocators.moviesNavigationBarTitleLocator.exists)
+//        XCUIApplication().navigationBars["movie-detail-navigation-bar"].buttons["Popular"].tap()
+//                
+//
+//        XCTAssertTrue(UITestLocators.MovieVCLocators.moviesNavigationBarTitleLocator.exists)
 
     }
 

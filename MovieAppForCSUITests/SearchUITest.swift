@@ -7,35 +7,97 @@
 
 import XCTest
 
-final class SearchUITest: XCTestCase {
+class SearchUITest: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var app: XCUIApplication!
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+    override func setUp() {
+        super.setUp()
+        app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        continueAfterFailure = false
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    override func tearDown() {
+        super.tearDown()
     }
+    
+    let searchNavigationBar = XCUIApplication().navigationBars["Search"]
+    let searchBar = XCUIApplication().searchFields["Find films..."]
+    
+    func test_TabBarItems_ClearlyWorking() {
+        
+        clickTabBar(1)
+        waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
+        XCTAssertTrue(isTabSelected(1))
+        XCTAssertTrue(UITestLocators.MovieVCLocators.moviesNavigationBarTitleLocator.exists)
+
+        clickTabBar(0)
+        waitForElement(searchNavigationBar)
+        XCTAssertTrue(isTabSelected(0))
+        XCTAssertTrue(searchBar.exists)
+
+    }
+    
+    func test_SearchTab_ItemsVerify() {
+        
+        clickTabBar(0)
+        waitForElement(searchNavigationBar)
+        XCTAssertTrue(isTabSelected(0))
+        
+        XCTAssertTrue(searchNavigationBar.staticTexts["Search"].exists)
+        XCTAssertTrue(searchBar.exists)
+        
+        searchBar.tap()
+        XCTAssertTrue(searchNavigationBar.buttons["Cancel"].exists)
+        XCTAssertTrue(isSearchBarKeyboardOpen(searchBar: searchBar))
+        searchNavigationBar.buttons["Cancel"].tap()
+        
+        XCTAssertTrue(searchNavigationBar.staticTexts["Search"].exists)
+        searchBar.tap()
+        XCTAssertTrue(isSearchBarKeyboardOpen(searchBar: searchBar))
+        searchBar.typeText("batman")
+        //TO DO assert
+        searchBar.buttons["Clear text"].tap()
+        searchBar.typeText("batman")
+
+        app.keyboards.buttons["Ara"].tap()
+        searchNavigationBar.buttons["Cancel"].tap()
+        
+    }
+    
+    func test_SearchTab_ScrollingTopToBottomAndReverse() {
+        
+        clickTabBar(0)
+        waitForElement(searchNavigationBar)
+        XCTAssertTrue(isTabSelected(0))
+        
+        XCTAssertTrue(searchNavigationBar.staticTexts["Search"].exists)
+        XCTAssertTrue(searchBar.exists)
+        
+        searchBar.tap()
+        XCTAssertTrue(isSearchBarKeyboardOpen(searchBar: searchBar))
+        searchBar.typeText("batman")
+        app.keyboards.buttons["Ara"].tap()
+
+        let firstCell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0)
+
+        let lastCell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: UITestLocators.MovieCellLocators.movieTableViewCellLocator.count - 1)
+
+        pageSwipeUp(lastCell)
+        waitForElement(lastCell)
+
+        let lastCellTitle = lastCell.staticTexts[UIAccessibleIdentifiers.MovieCell.movieCellTitleLabel]
+        let lastCellTitleLabel = lastCellTitle.label
+        XCTAssertTrue(app.staticTexts[lastCellTitleLabel].exists)
+
+        pageSwipeDown(firstCell)
+        waitForElement(firstCell)
+
+        let firstCellTitle = firstCell.staticTexts[UIAccessibleIdentifiers.MovieCell.movieCellTitleLabel]
+        let firstCellTitleLabel = firstCellTitle.label
+        XCTAssertTrue(app.staticTexts[firstCellTitleLabel].exists)
+
+    }
+    
 }

@@ -24,7 +24,9 @@ class MovieUITest: XCTestCase {
 
     func test_MovieHome_ItemsVerify() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
+        XCTAssertTrue(isTabSelected(1))
 
         XCTAssertTrue(UITestLocators.MovieVCLocators.moviesNavigationBarTitleLocator.exists)
         XCTAssertTrue(UITestLocators.MovieVCLocators.moviesTableViewLocator.exists)
@@ -39,8 +41,10 @@ class MovieUITest: XCTestCase {
     }
 
     func test_MovieHome_GoToDetailPageFromHome() {
-
+        
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
+        XCTAssertTrue(isTabSelected(1))
 
         let cell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0)
         let cellTitle = cell.staticTexts[UIAccessibleIdentifiers.MovieCell.movieCellTitleLabel]
@@ -60,8 +64,10 @@ class MovieUITest: XCTestCase {
 
     func test_MovieHome_GetRequestToSecondPage() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         let lastCell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 24)
 
         pageSwipeUp(lastCell)
@@ -76,8 +82,10 @@ class MovieUITest: XCTestCase {
 
     func test_MovieHome_ScrollingTopToBottomAndReverse() {
 
+        clickTabBar(1)
         waitForElement(UITestLocators.MovieVCLocators.moviesTableViewLocator)
-
+        XCTAssertTrue(isTabSelected(1))
+        
         let firstCell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: 0)
 
         let lastCell = UITestLocators.MovieCellLocators.movieTableViewCellLocator.element(boundBy: UITestLocators.MovieCellLocators.movieTableViewCellLocator.count - 1)
