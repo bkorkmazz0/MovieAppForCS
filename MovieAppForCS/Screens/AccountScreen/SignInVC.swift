@@ -68,7 +68,7 @@ class SignInVC: UIViewController {
         button.accessibilityIdentifier = UIAccessibleIdentifiers.SignInVC.signInSignInButton
 
         return button
-    }()
+    }() 
 
     private let createAccountButton: UIButton = {
         let button = UIButton()
